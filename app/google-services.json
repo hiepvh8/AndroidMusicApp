@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "92585955572",
+    "firebase_url": "https://supperapp-5e578-default-rtdb.firebaseio.com",
+    "project_id": "supperapp-5e578",
+    "storage_bucket": "supperapp-5e578.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92585955572:android:c38bd04e2137f13350cea1",
+        "android_client_info": {
+          "package_name": "com.example.androidmusicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQgoxrqn-RnzaR8ZOIcQIY2bGJzCxoWBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92585955572:android:865faaf89c996f1f50cea1",
+        "android_client_info": {
+          "package_name": "com.example.supperapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQgoxrqn-RnzaR8ZOIcQIY2bGJzCxoWBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

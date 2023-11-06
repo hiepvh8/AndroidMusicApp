@@ -6,18 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".activity.homeActivity.UserProfileActivity"
     android:background="@drawable/gradient_background">
+<!--=======-->
+<!--    android:background="@drawable/gradient_background"-->
+<!--    tools:context=".activity.UserProfileActivity">-->
+<!--&gt;>>>>>> develop-->
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="212dp"
-        android:text="This is my dick"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="216dp"
+        android:text="Home"
         android:textColor="@color/green"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                             }
                         }
+
+                        //yty
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             progressBar.setVisibility(View.GONE);

@@ -55,28 +55,20 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
             </ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView_login_email"
-                android:layout_toEndOf="@id/imageViewEmail"
-                android:text="Email*"
-                android:textColor="@color/black"
-                android:padding="5dp"
-                android:textSize="12sp">
-            </TextView>
             <EditText
+                android:id="@+id/editText_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText_login_email"
-                android:layout_below="@+id/textView_login_email"
-                android:layout_toEndOf="@+id/imageViewEmail"
-                android:inputType="textEmailAddress"
-                android:background="@android:color/transparent"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:padding="6sp">
+                android:layout_toEndOf="@+id/imageViewEmail"
+                android:background="@android:color/transparent"
+                android:inputType="textEmailAddress"
+                android:padding="6sp"
+                android:textColor="@color/text_color"
+                android:textStyle="normal"
+                android:hint="Email"
+                android:textColorHint="#DDDDDD">
             </EditText>
         </RelativeLayout>
         <RelativeLayout
@@ -95,35 +87,28 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
             </ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView_login_password"
-                android:layout_toEndOf="@id/imageViewPassword"
-                android:text="Mật khẩu*"
-                android:textColor="@color/black"
-                android:padding="5dp"
-                android:textSize="12sp">
-            </TextView>
+
             <EditText
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/editText_login_password"
-                android:layout_below="@+id/textView_login_password"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="10dp"
                 android:layout_toEndOf="@+id/imageViewPassword"
                 android:background="@android:color/transparent"
-                android:layout_marginBottom="10dp"
+                android:hint="Mật khẩu"
                 android:inputType="textPassword"
-                android:textStyle="bold"
-                android:textColor="@color/black"
                 android:padding="6sp"
-                android:layout_marginEnd="50dp">
+                android:textColor="@color/text_color"
+                android:textColorHint="#DDDDDD"
+                android:textStyle="normal">
             </EditText>
             <ImageView
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:id="@+id/imageView_show_hide_pass"
-                android:layout_below="@+id/textView_login_password"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentEnd="true">
             </ImageView>

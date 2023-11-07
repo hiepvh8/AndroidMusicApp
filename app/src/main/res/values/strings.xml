@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">AndroidMusicApp</string>
+    <string name="app_name">Supper Music</string>
+    <string name="forgot_password"><u>Quên mật khẩu?</u></string>
+    <string name="register"><u>Đăng ký</u></string>
+    <string name="Login"><u>Đăng nhập</u></string>
+    <string name="action_home"><u>Trang chủ</u></string>
+    <string name="action_search"><u>Tìm kiếm</u></string>
+    <string name="action_lib"><u>Thư viện</u></string>
+    <string name="action_personal"><u>Cá nhân</u></string>
+    <string name="action_notice"><u>Thông báo</u></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

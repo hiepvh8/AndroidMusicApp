@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AndroidMusicApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.authActivity.LoginActivity"
             android:exported="false">
         </activity>
         <activity
@@ -27,11 +27,11 @@
             android:name=".activity.authActivity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.authActivity.LoginActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+<!--                    .activity.MainActivity-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

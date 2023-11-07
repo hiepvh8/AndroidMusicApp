@@ -10,6 +10,9 @@ import android.os.Bundle;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.databinding.ActivityMainBinding;
+import com.example.androidmusicapp.viewmodels.HomeFragment;
+import com.example.androidmusicapp.viewmodels.PersonalFragment;
+import com.example.androidmusicapp.viewmodels.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new SearchFragment());
             } else if (itemId == R.id.personal) {
                 // Replace this with the appropriate fragment or action
+                replaceFragment(new PersonalFragment());
             }
             return true;
         });

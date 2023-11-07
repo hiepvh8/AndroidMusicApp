@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new HomeFragment());
             } else if (itemId == R.id.search) {
                 replaceFragment(new SearchFragment());
-            } else if (itemId == R.id.lib) {
+            } else if (itemId == R.id.personal) {
                 // Replace this with the appropriate fragment or action
             }
             return true;

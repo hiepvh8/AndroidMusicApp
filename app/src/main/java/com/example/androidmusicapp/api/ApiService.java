@@ -13,7 +13,7 @@ public interface ApiService {
 
     //http://localhost:8081/swagger-ui/index.html#/
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    ApiService apiService = new Retrofit.Builder().baseUrl("http://localhost:8081/")
+    ApiService apiService = new Retrofit.Builder().baseUrl("http://192.168.1.16:8081/")
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(ApiService.class);
 
     @GET("song")

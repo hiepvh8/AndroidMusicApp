@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.databinding.ActivityMainBinding;
 
 public class HomeFragment extends Fragment {
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

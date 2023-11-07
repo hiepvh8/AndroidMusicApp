@@ -6,7 +6,9 @@ import com.example.androidmusicapp.model.entity.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,6 +28,6 @@ public interface ApiService {
             .create(ApiService.class);
     @POST("auth/signin")
     Call<User> sendUser(@Body User user);
+    @POST("auth/signup")
+    Call<ResponseBody> signUp(@Body User user);
 }
-
-

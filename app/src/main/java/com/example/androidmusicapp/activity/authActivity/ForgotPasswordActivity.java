@@ -10,17 +10,9 @@ import android.widget.Button;
 import com.example.androidmusicapp.R;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-    private Button buttonBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
     }
 }

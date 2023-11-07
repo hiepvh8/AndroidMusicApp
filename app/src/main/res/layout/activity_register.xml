@@ -31,13 +31,52 @@
             android:textStyle="normal"
             android:layout_marginTop="5dp">
         </TextView>
+        <!--name-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RL_name"
+            android:layout_below="@+id/textView_register_head2"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/border">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageViewName"
+                android:background="@drawable/ic_profile"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+            </ImageView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView_register_name"
+                android:layout_toEndOf="@id/imageViewName"
+                android:text="Họ và tên*"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textSize="12sp">
+            </TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText_register_name"
+                android:layout_below="@+id/textView_register_name"
+                android:layout_toEndOf="@+id/imageViewName"
+                android:background="@android:color/transparent"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/text_color"
+                android:padding="6sp">
+            </EditText>
+        </RelativeLayout>
         <!--email-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/RL_email"
-            android:layout_below="@+id/textView_register_head2"
-            android:layout_marginTop="40dp"
+            android:layout_below="@+id/RL_name"
+            android:layout_marginTop="20dp"
             android:background="@drawable/border">
             <ImageView
                 android:layout_width="35dp"
@@ -71,52 +110,12 @@
                 android:padding="6sp">
             </EditText>
         </RelativeLayout>
-        <!--phone-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/RL_phone"
-            android:layout_below="@+id/RL_email"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/border">
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/imageViewPhone"
-                android:background="@drawable/phone"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
-            </ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView_register_phone"
-                android:layout_toEndOf="@id/imageViewPhone"
-                android:text="Số điện thoại*"
-                android:textColor="@color/black"
-                android:padding="5dp"
-                android:textSize="12sp">
-            </TextView>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText_register_phone"
-                android:layout_below="@+id/textView_register_phone"
-                android:layout_toEndOf="@+id/imageViewPhone"
-                android:background="@android:color/transparent"
-                android:layout_marginBottom="10dp"
-                android:inputType="phone"
-                android:textColor="@color/text_color"
-                android:padding="6sp">
-            </EditText>
-        </RelativeLayout>
         <!--password-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/RL_password"
-            android:layout_below="@+id/RL_phone"
+            android:layout_below="@+id/RL_email"
             android:layout_marginTop="20dp"
             android:background="@drawable/border">
             <ImageView
@@ -215,7 +214,7 @@
             android:layout_below="@+id/RL_cf_password"
             android:text="Đăng ký"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:textColor="@color/black"
             android:background="@drawable/border_button">
         </Button>
@@ -243,5 +242,15 @@
                 android:textSize="16sp">
             </TextView>
         </LinearLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:elevation="10dp"
+            android:visibility="gone">
+        </ProgressBar>
     </RelativeLayout>
 </ScrollView>

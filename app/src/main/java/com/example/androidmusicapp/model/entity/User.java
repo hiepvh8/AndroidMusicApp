@@ -1,4 +1,4 @@
-package com.example.androidmusicapp.model;
+package com.example.androidmusicapp.model.entity;
 
 public class User {
     private String email;

@@ -27,21 +27,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-//<<<<<<< HEAD
     sourceSets {
         main {
             res {
                 srcDirs 'src\\main\\res'
             }
         }
-//=======
-//
-//    buildFeatures{
-//        viewBinding true
-//>>>>>>> develop
+    }
+    buildFeatures{
+        viewBinding true
     }
 }
-
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'

@@ -1,9 +1,7 @@
 package com.example.androidmusicapp.api;
 
 
-import android.net.Uri;
-
-import com.example.androidmusicapp.model.User;
+import com.example.androidmusicapp.model.entity.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

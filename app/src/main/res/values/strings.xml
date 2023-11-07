@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidMusicApp</string>
+    <string name="app_name">Supper Music</string>
     <string name="forgot_password"><u>Quên mật khẩu?</u></string>
     <string name="register"><u>Đăng ký</u></string>
     <string name="Login"><u>Đăng nhập</u></string>

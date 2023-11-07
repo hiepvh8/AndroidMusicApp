@@ -16,6 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.activity.homeActivity.UserProfileActivity;
+import com.example.androidmusicapp.api.ApiService;
+import com.example.androidmusicapp.model.entity.User;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editTextLoginEmail , editTextLoginPassword;
@@ -35,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                finish();
             }
         });
         //forgot password
@@ -43,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+                finish();
             }
         });
         //show hide pass
@@ -63,17 +72,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         //Login
-        Button buttonLogin=findViewById(R.id.button_login);
+        Button buttonLogin = findViewById(R.id.button_login);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String textEmail = editTextLoginEmail.getText().toString();
                 String textPassword =editTextLoginPassword.getText().toString();
-                //login
-//                Toast.makeText(LoginActivity.this, "you are login now", Toast.LENGTH_SHORT).show();
-                //Start the userprofile
-//                startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
-//                finish(); // close activity login
                 if(TextUtils.isEmpty(textEmail)){
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
                     editTextLoginEmail.setError("Nhâp email");
@@ -83,30 +87,29 @@ public class LoginActivity extends AppCompatActivity {
                     editTextLoginPassword.setError("Nhập mật khẩu");
                     editTextLoginPassword.requestFocus();
                 } else {
-                    progressBar.setVisibility(View.VISIBLE);
-//                    loginUser(textEmail,textPassword);loginUser(textEmail,textPassword);
+                    User user = new User(textEmail,textPassword);
+                    ApiService.apiService.sendUser(user).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this,UserProfileActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        //yty
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             }
         });
     }
-
-//    private void loginUser(String textEmail, String textPass) {
-//        authProfile.signInWithEmailAndPassword(textEmail , textPass).addOnCompleteListener(LoginActivity.this,new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                if(task.isSuccessful()){
-//                    FirebaseUser firebaseUser = authProfile.getCurrentUser();
-//                    //check if email is verify before user can access
-//                    Toast.makeText(LoginActivity.this, "you are login now", Toast.LENGTH_SHORT).show();
-//                    //Start the userprofile
-//                    startActivity(new Intent(LoginActivity.this,UserProfileActivity.class));
-//                    finish(); // close activity login
-//                } else {
-//                    Toast.makeText(LoginActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
-//                }
-//                progressBar.setVisibility(View.GONE);
-//            }
-//        });
-//    }
-
 }

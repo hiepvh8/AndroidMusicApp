@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface ApiService {
     //http://localhost:8081/auth/signin
@@ -23,11 +24,13 @@ public interface ApiService {
     ApiService apiService = new Retrofit.Builder()
             //ip máy
             .baseUrl("http://192.168.1.5:8081/")
+            //192.168.1.5
+            //192.168.39.220
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
     @POST("auth/signin")
-    Call<User> sendUser(@Body User user);
+    Call<User> signIn(@Body User user);
     @POST("auth/signup")
     Call<ResponseBody> signUp(@Body User user);
 }

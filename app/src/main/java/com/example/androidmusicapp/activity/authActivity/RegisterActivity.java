@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                     editTextRegisterCfPassword.clearComposingText();
                 } else {
                     progressBar.setVisibility(view.VISIBLE);
-                    User user = new User(textEmail,textPassword);
+                    User user = new User(textName,textEmail,textPassword);
                     ApiService.apiService.signUp(user).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

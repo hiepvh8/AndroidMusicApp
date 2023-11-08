@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
                     User user = new User(textEmail,textPassword);
-                    ApiService.apiService.sendUser(user).enqueue(new Callback<User>() {
+                    ApiService.apiService.signIn(user).enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if(response.isSuccessful()){

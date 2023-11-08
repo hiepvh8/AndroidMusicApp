@@ -24,8 +24,6 @@ public interface ApiService {
     ApiService apiService = new Retrofit.Builder()
             //ip máy
             .baseUrl("http://192.168.1.5:8081/")
-            //192.168.1.5
-            //192.168.39.220
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);

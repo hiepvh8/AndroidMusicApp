@@ -7,6 +7,7 @@
     tools:context=".activity.authActivity.LoginActivity"
     android:background="@drawable/gradient_background">
     <RelativeLayout
+        android:id="@+id/activity_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="25dp">
@@ -122,7 +123,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:textColor="@color/black"
-            android:background="@drawable/border_button">
+            android:background="@drawable/border_button"
+            >
         </Button>
         <TextView
             android:layout_width="match_parent"

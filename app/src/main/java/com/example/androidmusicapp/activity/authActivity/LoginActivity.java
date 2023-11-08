@@ -20,6 +20,7 @@ import com.example.androidmusicapp.activity.homeActivity.UserProfileActivity;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
 
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +28,8 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     private EditText editTextLoginEmail , editTextLoginPassword;
     private ProgressBar progressBar;
+
+
 //    private FirebaseAuth authProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<User> call, Response<User> response) {
                             if(response.isSuccessful()){
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this,UserProfileActivity.class));
+                                startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
                                 finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.activity.MainActivity;
 import com.example.androidmusicapp.api.ApiService;
+import com.example.androidmusicapp.fragment.HomeFragment;
 import com.example.androidmusicapp.model.entity.User;
 
 
@@ -101,8 +102,6 @@ public class LoginActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                             }
                         }
-
-                        //yty
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             Toast.makeText(LoginActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();

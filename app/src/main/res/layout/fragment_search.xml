@@ -21,26 +21,26 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="5dp"
             >
-
         <androidx.appcompat.widget.SearchView
-
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/searchView"
             app:queryHint="Bạn muốn nghe gì?"
             android:background="@color/white"
             app:iconifiedByDefault="false">
-
         </androidx.appcompat.widget.SearchView>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recycle"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/card">
+            android:layout_below="@+id/card"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 

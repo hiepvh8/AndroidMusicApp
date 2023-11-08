@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
-import com.example.androidmusicapp.activity.homeActivity.UserProfileActivity;
+import com.example.androidmusicapp.activity.MainActivity;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
 
@@ -29,8 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextLoginEmail , editTextLoginPassword;
     private ProgressBar progressBar;
 
-
-//    private FirebaseAuth authProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-                finish();
             }
         });
         //forgot password
@@ -54,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-                finish();
             }
         });
         //show hide pass
@@ -90,29 +87,31 @@ public class LoginActivity extends AppCompatActivity {
                     editTextLoginPassword.setError("Nhập mật khẩu");
                     editTextLoginPassword.requestFocus();
                 } else {
+                    progressBar.setVisibility(View.VISIBLE);
                     User user = new User(textEmail,textPassword);
-                    ApiService.apiService.sendUser(user).enqueue(new Callback<User>() {
+                    ApiService.apiService.signIn(user).enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if(response.isSuccessful()){
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
 
                         //yty
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
-                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(LoginActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
-
                 }
             }
         });
     }
 }
+//av

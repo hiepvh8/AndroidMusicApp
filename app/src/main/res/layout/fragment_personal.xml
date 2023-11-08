@@ -3,14 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment"
-    android:background="@drawable/gradient_background">
+    tools:context=".fragment.PersonalFragment">
 
     <TextView
-        android:id="@+id/home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Home"
-        android:textColor="@color/white"/>
+        android:text="Hello" />
 
 </FrameLayout>

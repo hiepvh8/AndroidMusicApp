@@ -1,6 +1,4 @@
-package com.example.androidmusicapp.viewmodels;
-
-import androidx.lifecycle.ViewModelProvider;
+package com.example.androidmusicapp.fragment;
 
 import android.os.Bundle;
 
@@ -16,7 +14,6 @@ import com.example.androidmusicapp.R;
 
 public class SearchFragment extends Fragment {
 
-    private SearchViewModel mViewModel;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -28,11 +25,5 @@ public class SearchFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        // TODO: Use the ViewModel
-    }
 
 }

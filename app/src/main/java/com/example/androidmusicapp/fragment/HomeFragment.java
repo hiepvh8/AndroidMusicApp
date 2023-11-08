@@ -1,6 +1,4 @@
-package com.example.androidmusicapp.viewmodels;
-
-import androidx.lifecycle.ViewModelProvider;
+package com.example.androidmusicapp.fragment;
 
 import android.os.Bundle;
 
@@ -16,7 +14,7 @@ import com.example.androidmusicapp.R;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel mViewModel;
+
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -28,11 +26,6 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        // TODO: Use the ViewModel
-    }
+
 
 }

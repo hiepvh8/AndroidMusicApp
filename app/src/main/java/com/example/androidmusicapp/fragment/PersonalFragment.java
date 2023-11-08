@@ -1,6 +1,4 @@
-package com.example.androidmusicapp.viewmodels;
-
-import androidx.lifecycle.ViewModelProvider;
+package com.example.androidmusicapp.fragment;
 
 import android.os.Bundle;
 
@@ -16,7 +14,7 @@ import com.example.androidmusicapp.R;
 
 public class PersonalFragment extends Fragment {
 
-    private PersonalViewModel mViewModel;
+
 
     public static PersonalFragment newInstance() {
         return new PersonalFragment();
@@ -25,14 +23,7 @@ public class PersonalFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_user_profile, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(PersonalViewModel.class);
-        // TODO: Use the ViewModel
+        return inflater.inflate(R.layout.activity_login, container, false);
     }
 
 }

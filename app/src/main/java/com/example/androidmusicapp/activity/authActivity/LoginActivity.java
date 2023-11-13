@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         editTextLoginEmail = findViewById(R.id.editText_login_email);
         editTextLoginPassword =findViewById(R.id.editText_login_password);
         progressBar = findViewById(R.id.progressBar);
@@ -113,4 +112,3 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
-//av

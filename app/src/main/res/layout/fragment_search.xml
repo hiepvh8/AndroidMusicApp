@@ -27,7 +27,8 @@
             android:id="@+id/searchView"
             app:queryHint="Bạn muốn nghe gì?"
             android:background="@color/white"
-            app:iconifiedByDefault="false">
+            app:iconifiedByDefault="false"
+            android:theme="@style/BlackText">
         </androidx.appcompat.widget.SearchView>
 
         </androidx.cardview.widget.CardView>

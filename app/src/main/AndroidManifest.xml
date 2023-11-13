@@ -18,9 +18,6 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".activity.homeActivity.UserProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.authActivity.RegisterActivity"
             android:exported="false" />
         <activity

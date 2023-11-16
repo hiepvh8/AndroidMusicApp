@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment {
                     // Update the existing songList
                     songList.clear(); // Clear the previous data
                     songList.addAll(response.body());
-
                     // Notify the adapter that the data has changed
                     songAdapter.notifyDataSetChanged();
                 } else {

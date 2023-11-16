@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,9 +42,10 @@ public interface ApiService {
     //192.168.39.220
     //192.168.1.13
 
+    OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+
+
     @POST("auth/signin")
-
-
     Call<User> signIn(@Body User user);
     @POST("auth/signup")
     Call<ResponseBody> signUp(@Body User user);

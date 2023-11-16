@@ -16,16 +16,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".dick"
-            android:exported="false" />
-        <activity
             android:name=".activity.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:exported="false" />
         <activity
             android:name=".activity.authActivity.RegisterActivity"
             android:exported="false" />
@@ -34,7 +26,9 @@
             android:exported="false" />
         <activity
             android:name=".activity.authActivity.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <!-- .activity.MainActivity -->

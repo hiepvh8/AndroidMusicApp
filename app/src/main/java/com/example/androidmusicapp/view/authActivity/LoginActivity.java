@@ -1,4 +1,4 @@
-package com.example.androidmusicapp.activity.authActivity;
+package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,9 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
-import com.example.androidmusicapp.activity.MainActivity;
+import com.example.androidmusicapp.view.MainActivity;
 import com.example.androidmusicapp.api.ApiService;
-import com.example.androidmusicapp.fragment.HomeFragment;
 import com.example.androidmusicapp.model.entity.User;
 
 

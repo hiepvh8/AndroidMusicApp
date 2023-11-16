@@ -1,4 +1,4 @@
-package com.example.androidmusicapp.activity;
+package com.example.androidmusicapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -9,10 +9,10 @@ import android.os.Bundle;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.databinding.ActivityMainBinding;
-import com.example.androidmusicapp.fragment.HomeFragment;
-import com.example.androidmusicapp.fragment.LibararyFragment;
-import com.example.androidmusicapp.fragment.PersonalFragment;
-import com.example.androidmusicapp.fragment.SearchFragment;
+import com.example.androidmusicapp.view.fragment.HomeFragment;
+import com.example.androidmusicapp.view.fragment.LibararyFragment;
+import com.example.androidmusicapp.view.fragment.PersonalFragment;
+import com.example.androidmusicapp.view.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

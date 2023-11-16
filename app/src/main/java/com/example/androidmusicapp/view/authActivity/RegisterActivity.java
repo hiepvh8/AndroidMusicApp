@@ -1,10 +1,9 @@
-package com.example.androidmusicapp.activity.authActivity;
+package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -52,6 +51,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập tên", Toast.LENGTH_SHORT).show();
                     editTextRegisterName.setError("Nhập tên");
                     editTextRegisterName.requestFocus();
+                } else if (textName.contains(" ")) {
+                    Toast.makeText(RegisterActivity.this, "Tên không được chứa dấu cách", Toast.LENGTH_SHORT).show();
+                    editTextRegisterName.setError("Tên không được chứa dấu cách");
+                    editTextRegisterName.requestFocus();
                 } else if (TextUtils.isEmpty(textEmail)){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập email ", Toast.LENGTH_SHORT).show();
                     editTextRegisterEmail.setError("Nhập email");
@@ -94,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 editTextRegisterPassword.setText("");
                                 editTextRegisterCfPassword.setText("");
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "username hoặc email đã tồn tại", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(view.GONE);
                             }
                         }

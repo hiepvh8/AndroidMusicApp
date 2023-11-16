@@ -53,15 +53,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             //duration = itemView.findViewById(R.id.SongDuration);
             genre = itemView.findViewById(R.id.SongGenre);
             art = itemView.findViewById(R.id.SongArt);
-
-
         }
         public void bind(Song song){
             title.setText(String.valueOf(song.getTitle()));
             //duration.setText(String.valueOf(song.getDuration()));
             genre.setText(String.valueOf(song.getGenre()));
             Glide.with(context).load(song.getCoverArt()).into(art);
-
         }
     }
 }

@@ -1,10 +1,9 @@
-package com.example.androidmusicapp.activity.authActivity;
+package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -20,6 +19,11 @@ import android.widget.Toast;
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -51,6 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(textName)){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập tên", Toast.LENGTH_SHORT).show();
                     editTextRegisterName.setError("Nhập tên");
+                    editTextRegisterName.requestFocus();
+                } else if (textName.contains(" ")) {
+                    Toast.makeText(RegisterActivity.this, "Tên không được chứa dấu cách", Toast.LENGTH_SHORT).show();
+                    editTextRegisterName.setError("Tên không được chứa dấu cách");
                     editTextRegisterName.requestFocus();
                 } else if (TextUtils.isEmpty(textEmail)){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập email ", Toast.LENGTH_SHORT).show();
@@ -85,8 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
                     ApiService.apiService.signUp(user).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()){
-                                progressBar.setVisibility(view.GONE);
+                            progressBar.setVisibility(View.GONE);
+                            if (response.isSuccessful()) {
+                                // Xử lý phản hồi thành công từ server
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                                 editTextRegisterEmail.setText("");
@@ -94,17 +103,39 @@ public class RegisterActivity extends AppCompatActivity {
                                 editTextRegisterPassword.setText("");
                                 editTextRegisterCfPassword.setText("");
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(view.GONE);
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(errorBody);
+                                    if (jsonObject.has("status") && jsonObject.getString("status").equals("NOT_FOUND")) {
+                                        String message = jsonObject.getString("message");
+                                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+                                        if (message.equals("Username đã tồn tại")) {
+                                            editTextRegisterName.setError("Tên đã tồn tại");
+                                            editTextRegisterName.requestFocus();
+                                        } else if (message.equals("Email đã tồn tại")) {
+                                            editTextRegisterEmail.setError("Email đã tồn tại");
+                                            editTextRegisterEmail.requestFocus();
+                                        } else {
+                                            editTextRegisterName.setError("Tên đã tồn tại");
+                                            editTextRegisterEmail.setError("Email đã tồn tại");
+                                        }
+                                    }
+                                    else {
+                                        Toast.makeText(RegisterActivity.this, "Đã xảy ra lỗi khi đăng ký", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(RegisterActivity.this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            progressBar.setVisibility(view.GONE);
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(RegisterActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             }
         });

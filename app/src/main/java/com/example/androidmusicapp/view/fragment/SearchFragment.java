@@ -1,4 +1,4 @@
-package com.example.androidmusicapp.fragment;
+package com.example.androidmusicapp.view.fragment;
 
 import android.os.Bundle;
 
@@ -12,18 +12,18 @@ import android.view.ViewGroup;
 
 import com.example.androidmusicapp.R;
 
-public class PersonalFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
 
-
-    public static PersonalFragment newInstance() {
-        return new PersonalFragment();
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_login, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
+
 
 }

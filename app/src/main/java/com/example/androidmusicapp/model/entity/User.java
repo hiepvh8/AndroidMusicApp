@@ -5,6 +5,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String token;
 
     public User(){
     }
@@ -18,6 +19,21 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String username, String email, String password, String token) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUsername() {

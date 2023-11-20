@@ -40,7 +40,9 @@ public interface ApiService {
             .addInterceptor(loggingInterceptor);
     ApiService apiService = new Retrofit.Builder()
             //ip máy
-            .baseUrl("http://192.168.1.5:8081/")
+            .baseUrl("http://192.168.191.220:8081/")
+            //192.168.191.220
+            //192.168.1.3
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);

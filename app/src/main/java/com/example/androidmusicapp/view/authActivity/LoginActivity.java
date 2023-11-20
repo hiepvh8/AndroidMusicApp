@@ -16,11 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
-<<<<<<< HEAD:app/src/main/java/com/example/androidmusicapp/activity/authActivity/LoginActivity.java
-import com.example.androidmusicapp.activity.MainActivity;
-=======
 import com.example.androidmusicapp.view.MainActivity;
->>>>>>> feature:app/src/main/java/com/example/androidmusicapp/view/authActivity/LoginActivity.java
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
 

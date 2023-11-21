@@ -16,10 +16,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.MainActivity"
-            android:exported="false"
+            android:name=".view.authActivity.LoginActivity"
+
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false"/>
         <activity
             android:name=".view.authActivity.RegisterActivity"
             android:exported="false" />
@@ -27,7 +28,8 @@
             android:name=".view.authActivity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".view.authActivity.LoginActivity"
+            android:name=".view.MainActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

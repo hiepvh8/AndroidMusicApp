@@ -1,6 +1,8 @@
 package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,44 +18,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.databinding.ActivityLoginBinding;
 import com.example.androidmusicapp.view.MainActivity;
-import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText editTextLoginEmail , editTextLoginPassword;
-    private ProgressBar progressBar;
+    private loginViewModel loginViewModel;
+    private ActivityLoginBinding activityLoginBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        editTextLoginEmail = findViewById(R.id.editText_login_email);
-        editTextLoginPassword =findViewById(R.id.editText_login_password);
-        progressBar = findViewById(R.id.progressBar);
+        activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(activityLoginBinding.getRoot());
+
+        loginViewModel = new ViewModelProvider(this).get(com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel.class);
+
+        EditText editTextLoginEmail = activityLoginBinding.editTextLoginEmail;
+        EditText editTextLoginPassword = activityLoginBinding.editTextLoginPassword;
+        ProgressBar progressBar = activityLoginBinding.progressBar;
         //register
-        TextView textView_register_link = findViewById(R.id.textView_register_link);
-        textView_register_link.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.textViewRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
         //forgot password
-        TextView textView_forgot_password = findViewById(R.id.textView_forgot_password_link);
-        textView_forgot_password.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.textViewForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
         //show hide pass
-        ImageView imageViewShowHidePass = findViewById(R.id.imageView_show_hide_pass);
+        ImageView imageViewShowHidePass = activityLoginBinding.imageViewShowHidePass;
         imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
         imageViewShowHidePass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         //Login
-        Button buttonLogin = findViewById(R.id.button_login);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String textEmail = editTextLoginEmail.getText().toString();
@@ -87,22 +86,25 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
                     User user = new User(textEmail,textPassword);
-                    ApiService.apiService.signIn(user).enqueue(new Callback<User>() {
+                    loginViewModel.loginUser(user);
+                    loginViewModel.getIsLoginSuccessful().observe(LoginActivity.this, new Observer<Boolean>() {
                         @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if(response.isSuccessful()){
+                        public void onChanged(Boolean isLoginSuccessful) {
+                            if (isLoginSuccessful) {
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
+                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    });
+                    loginViewModel.getErrorMessage().observe(LoginActivity.this, new Observer<String>() {
                         @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Toast.makeText(LoginActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+                        public void onChanged(String errorMessage) {
                             progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

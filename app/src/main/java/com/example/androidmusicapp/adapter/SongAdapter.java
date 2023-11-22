@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Song;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
@@ -25,6 +26,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public SongAdapter(Context context, List<Song> List) {
         this.context = context;
         this.songList = List;
+    }
+
+    public void setSongList(ArrayList<Song> songList){
+        this.songList = songList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -41,7 +47,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return songList.size();
+        if (this.songList != null){
+            return this.songList.size();
+        }
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

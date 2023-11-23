@@ -12,18 +12,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.databinding.FragmentPersonalBinding;
 
 public class PersonalFragment extends Fragment {
-    TextView textViewName;
-    public static PersonalFragment newInstance() {
-        return new PersonalFragment();
-    }
-
+    private FragmentPersonalBinding fragmentPersonalBinding;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_personal, container, false);
+        fragmentPersonalBinding = FragmentPersonalBinding.inflate(inflater, container, false);
 
+
+        return fragmentPersonalBinding.getRoot();
     }
 
 }

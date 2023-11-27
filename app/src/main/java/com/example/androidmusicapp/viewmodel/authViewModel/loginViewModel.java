@@ -1,5 +1,6 @@
 package com.example.androidmusicapp.viewmodel.authViewModel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,33 +12,47 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class loginViewModel extends ViewModel {
-    private MutableLiveData<Boolean> isLoginSuccessful = new MutableLiveData<>();
+    private MutableLiveData<Boolean> loginSuccess = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
-
-    public MutableLiveData<Boolean> getIsLoginSuccessful() {
-        return isLoginSuccessful;
+    private LoginResultCallback loginResultCallback;
+    public void setLoginResultCallback(LoginResultCallback callback) {
+        loginResultCallback = callback;
     }
 
-    public MutableLiveData<String> getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void loginUser(User user){
+    public void loginUser(String email, String password) {
+        User user = new User(email, password);
         ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
         Call<User> call = apiService.signIn(user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    isLoginSuccessful.setValue(true);
+                    User userResponse = response.body();
+                    String token = userResponse.getToken();
+                    loginSuccess.postValue(true);
+                    if (loginResultCallback != null) {
+                        loginResultCallback.onSuccess(token);
+                    }
                 } else {
-                    isLoginSuccessful.setValue(false);
+                    errorMessage.postValue("Tài khoản hoặc mật khẩu không chính xác");
+                    if (loginResultCallback != null) {
+                        loginResultCallback.onError("Tài khoản hoặc mật khẩu không chính xác");
+                    }
                 }
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                errorMessage.setValue("có lỗi xảy ra");
+                errorMessage.postValue("Có lỗi xảy ra");
+                if (loginResultCallback != null) {
+                    loginResultCallback.onError("Có lỗi xảy ra");
+                }
             }
         });
+    }
+
+    public interface LoginResultCallback {
+        void onSuccess(String token);
+        void onError(String errorMessage);
     }
 }

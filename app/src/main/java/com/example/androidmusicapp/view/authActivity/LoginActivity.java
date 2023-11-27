@@ -23,9 +23,10 @@ import com.example.androidmusicapp.view.MainActivity;
 import com.example.androidmusicapp.model.entity.User;
 import com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel.LoginResultCallback {
     private loginViewModel loginViewModel;
     private ActivityLoginBinding activityLoginBinding;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,51 +34,21 @@ public class LoginActivity extends AppCompatActivity {
         activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(activityLoginBinding.getRoot());
 
-        loginViewModel = new ViewModelProvider(this).get(com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(loginViewModel.class);
+        loginViewModel.setLoginResultCallback(this);
 
         EditText editTextLoginEmail = activityLoginBinding.editTextLoginEmail;
         EditText editTextLoginPassword = activityLoginBinding.editTextLoginPassword;
-        ProgressBar progressBar = activityLoginBinding.progressBar;
-        //register
-        activityLoginBinding.textViewRegisterLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-        //forgot password
-        activityLoginBinding.textViewForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-            }
-        });
-        //show hide pass
-        ImageView imageViewShowHidePass = activityLoginBinding.imageViewShowHidePass;
-        imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
-        imageViewShowHidePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(editTextLoginPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                    //if pass is visible then hide it
-                    editTextLoginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    //change icon
-                    imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
-                } else {
-                    editTextLoginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    imageViewShowHidePass.setImageResource(R.drawable.ic_show_pass);
-                }
-            }
-        });
-        //Login
+        progressBar = activityLoginBinding.progressBar;
+
         activityLoginBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String textEmail = editTextLoginEmail.getText().toString();
-                String textPassword =editTextLoginPassword.getText().toString();
+                String textPassword = editTextLoginPassword.getText().toString();
                 if(TextUtils.isEmpty(textEmail)){
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
-                    editTextLoginEmail.setError("Nhâp email");
+                    editTextLoginEmail.setError("Nhập email");
                     editTextLoginEmail.requestFocus();
                 } else if (TextUtils.isEmpty(textPassword)){
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
@@ -85,30 +56,23 @@ public class LoginActivity extends AppCompatActivity {
                     editTextLoginPassword.requestFocus();
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
-                    User user = new User(textEmail,textPassword);
-                    loginViewModel.loginUser(user);
-                    loginViewModel.getIsLoginSuccessful().observe(LoginActivity.this, new Observer<Boolean>() {
-                        @Override
-                        public void onChanged(Boolean isLoginSuccessful) {
-                            if (isLoginSuccessful) {
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    loginViewModel.getErrorMessage().observe(LoginActivity.this, new Observer<String>() {
-                        @Override
-                        public void onChanged(String errorMessage) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    loginViewModel.loginUser(textEmail,textPassword);
                 }
             }
         });
+    }
+
+    @Override
+    public void onSuccess(String token) {
+        Intent intent = new Intent(LoginActivity.this, test.class);
+        intent.putExtra("TOKEN_KEY", token);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

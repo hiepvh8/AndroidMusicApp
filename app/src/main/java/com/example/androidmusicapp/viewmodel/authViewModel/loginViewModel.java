@@ -12,16 +12,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class loginViewModel extends ViewModel {
-    private MutableLiveData<Boolean> loginSuccess = new MutableLiveData<>();
+    private MutableLiveData<String> loginResultLiveData = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private LoginResultCallback loginResultCallback;
-    public void setLoginResultCallback(LoginResultCallback callback) {
-        loginResultCallback = callback;
+    public LiveData<String> getLoginResultLiveData() {
+        return loginResultLiveData;
+    }
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
-    public void loginUser(String email, String password) {
-        User user = new User(email, password);
+    public void performLogin(String email, String password) {
         ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+        User user = new User(email, password);
         Call<User> call = apiService.signIn(user);
         call.enqueue(new Callback<User>() {
             @Override
@@ -29,30 +31,17 @@ public class loginViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     User userResponse = response.body();
                     String token = userResponse.getToken();
-                    loginSuccess.postValue(true);
-                    if (loginResultCallback != null) {
-                        loginResultCallback.onSuccess(token);
-                    }
+                    loginResultLiveData.setValue(token);
                 } else {
-                    errorMessage.postValue("Tài khoản hoặc mật khẩu không chính xác");
-                    if (loginResultCallback != null) {
-                        loginResultCallback.onError("Tài khoản hoặc mật khẩu không chính xác");
-                    }
+                    loginResultLiveData.setValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                errorMessage.postValue("Có lỗi xảy ra");
-                if (loginResultCallback != null) {
-                    loginResultCallback.onError("Có lỗi xảy ra");
-                }
+                errorMessage.setValue("có lỗi xảy ra");
             }
         });
     }
-
-    public interface LoginResultCallback {
-        void onSuccess(String token);
-        void onError(String errorMessage);
-    }
 }
+

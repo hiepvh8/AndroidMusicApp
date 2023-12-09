@@ -58,27 +58,6 @@ public class test extends AppCompatActivity {
 
                 }
             });
-//            call.enqueue(new Callback<User>() {
-//                @Override
-//                public void onResponse(Call<User> call, Response<User> response) {
-//                    if (response.isSuccessful()) {
-//                        // Xử lý dữ liệu trả về khi thành công
-//                        User user1 = response.body();
-//                        Gson gson = new Gson();
-//                        String userJson = gson.toJson(user1);
-//                        TextView textViewuser = findViewById(R.id.textViewtest2);
-//                        textViewuser.setText(userJson);
-//                        // Tiến hành xử lý dữ liệu nhận được từ response ở đây
-//                    } else {
-//                        // Xử lý khi có lỗi từ server (có thể kiểm tra response code để biết lý do lỗi)
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<User> call, Throwable t) {
-//
-//                }
-//            });
         } catch (JSONException e) {
             e.printStackTrace();
             // Xử lý khi có lỗi xảy ra khi phân tích JSON

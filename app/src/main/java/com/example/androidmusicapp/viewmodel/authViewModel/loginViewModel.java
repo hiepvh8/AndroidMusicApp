@@ -1,5 +1,6 @@
 package com.example.androidmusicapp.viewmodel.authViewModel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,29 +12,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class loginViewModel extends ViewModel {
-    private MutableLiveData<Boolean> isLoginSuccessful = new MutableLiveData<>();
+    private MutableLiveData<String> loginResultLiveData = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
-
-    public MutableLiveData<Boolean> getIsLoginSuccessful() {
-        return isLoginSuccessful;
+    public LiveData<String> getLoginResultLiveData() {
+        return loginResultLiveData;
     }
-
-    public MutableLiveData<String> getErrorMessage() {
+    public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
-    public void loginUser(User user){
+    public void performLogin(String email, String password) {
         ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+        User user = new User(email, password);
         Call<User> call = apiService.signIn(user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    isLoginSuccessful.setValue(true);
+                    User userResponse = response.body();
+                    String token = userResponse.getToken();
+                    loginResultLiveData.setValue(token);
                 } else {
-                    isLoginSuccessful.setValue(false);
+                    loginResultLiveData.setValue(null);
                 }
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 errorMessage.setValue("có lỗi xảy ra");
@@ -41,3 +44,4 @@ public class loginViewModel extends ViewModel {
         });
     }
 }
+

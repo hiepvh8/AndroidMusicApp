@@ -1,13 +1,42 @@
 package com.example.androidmusicapp.model.entity;
 
-public class User {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    private String username;
+public  class User {
+
+    @Expose
+    @SerializedName("phoneNumber")
+    private String phoneNumber;
+    @Expose
+    @SerializedName("profilePicture")
+    private String profilePicture;
+    @Expose
+    @SerializedName("gender")
+    private String gender;
+    @Expose
+    @SerializedName("birthday")
+    private String birthday;
+    @Expose
+    @SerializedName("fullName")
+    private String fullName;
+    @Expose
+    @SerializedName("email")
     private String email;
+    @Expose
+    @SerializedName("username")
+    private String username;
+    @Expose
+    @SerializedName("password")
     private String password;
+    @Expose
+    @SerializedName("token")
     private String token;
+    @Expose
+    @SerializedName("id")
+    private int id;
 
-    public User(){
+    public User() {
     }
 
     public User(String email, String password) {
@@ -20,28 +49,44 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
-    public User(String username, String email, String password, String token) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.token = token;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getToken() {
-        return token;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public String getUsername() {
-        return username;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -52,6 +97,14 @@ public class User {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -60,12 +113,19 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

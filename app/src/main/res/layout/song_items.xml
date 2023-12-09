@@ -7,7 +7,8 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     android:layout_margin="10dp"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:id="@+id/song_item">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,14 +36,15 @@
             android:background="@color/black"
            />
 
-        <!-- Song Duration -->
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_below="@+id/SongTitle"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/SongDuration"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:textColor="@android:color/black"/>-->
+<!--         Song Duration -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/SongGenre"
+            android:layout_height="wrap_content"
+            android:id="@+id/SongDuration"
+            android:textColor="@android:color/white"
+            android:background="@color/black"
+            />
 
         <!-- Song Genre -->
         <TextView

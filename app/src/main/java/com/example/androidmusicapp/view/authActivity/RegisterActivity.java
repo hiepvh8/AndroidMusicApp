@@ -1,6 +1,8 @@
 package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,30 +19,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
-import com.example.androidmusicapp.api.ApiService;
+import com.example.androidmusicapp.databinding.ActivityRegisterBinding;
 import com.example.androidmusicapp.model.entity.User;
+import com.example.androidmusicapp.viewmodel.authViewModel.registerViewModel;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText editTextRegisterName , editTextRegisterEmail, editTextRegisterPassword, editTextRegisterCfPassword;
-    private ProgressBar progressBar;
+    private registerViewModel registerViewModel;
+    private ActivityRegisterBinding activityRegisterBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        editTextRegisterName = findViewById(R.id.editText_register_name);
-        editTextRegisterEmail = findViewById(R.id.editText_register_email);
-        editTextRegisterPassword = findViewById(R.id.editText_register_password);
-        editTextRegisterCfPassword = findViewById(R.id.editText_register_cf_password);
+        activityRegisterBinding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(activityRegisterBinding.getRoot());
 
-        progressBar = findViewById(R.id.progressBar);
+        registerViewModel = new ViewModelProvider(this).get(com.example.androidmusicapp.viewmodel.authViewModel.registerViewModel.class);
+
+        EditText editTextRegisterName = activityRegisterBinding.editTextRegisterName;
+        EditText editTextRegisterEmail = activityRegisterBinding.editTextRegisterEmail;
+        EditText editTextRegisterPassword = activityRegisterBinding.editTextRegisterPassword;
+        EditText editTextRegisterCfPassword = activityRegisterBinding.editTextRegisterCfPassword;
+
+        ProgressBar progressBar = activityRegisterBinding.progressBar;
         //register
-        Button buttonRegister = findViewById(R.id.button_register);
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
+        activityRegisterBinding.buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String textName = editTextRegisterName.getText().toString();
@@ -85,27 +87,28 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     progressBar.setVisibility(view.VISIBLE);
                     User user = new User(textName,textEmail,textPassword);
-                    ApiService.apiService.signUp(user).enqueue(new Callback<ResponseBody>() {
+                    registerViewModel.registerUser(user);
+                    registerViewModel.getIsRegisterSuccessful().observe(RegisterActivity.this, new Observer<Boolean>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()){
-                                progressBar.setVisibility(view.GONE);
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                        public void onChanged(Boolean isRegisterSuccessful) {
+                            if(isRegisterSuccessful){
                                 editTextRegisterEmail.setText("");
                                 editTextRegisterName.setText("");
                                 editTextRegisterPassword.setText("");
                                 editTextRegisterCfPassword.setText("");
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(RegisterActivity.this, "username hoặc email đã tồn tại", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(view.GONE);
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(RegisterActivity.this, "Đã xảy ra lỗi khi đăng ký", Toast.LENGTH_SHORT).show();
                             }
                         }
-
+                    });
+                    registerViewModel.getErrorMessage().observe(RegisterActivity.this, new Observer<String>() {
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            progressBar.setVisibility(view.GONE);
-                            Toast.makeText(RegisterActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+                        public void onChanged(String errorMessage) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -114,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         //show hide pass
-        ImageView imageViewShowHidePass = findViewById(R.id.imageView_show_hide_pass);
+        ImageView imageViewShowHidePass = activityRegisterBinding.imageViewShowHidePass;
         imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
         imageViewShowHidePass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         //show hide cf pass
-        ImageView imageViewShowHideCfPass = findViewById(R.id.imageView_show_hide_cf_pass);
+        ImageView imageViewShowHideCfPass = activityRegisterBinding.imageViewShowHideCfPass;
         imageViewShowHideCfPass.setImageResource(R.drawable.ic_hide_pass);
         imageViewShowHideCfPass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         //login
-        TextView textView_Login_Link =findViewById(R.id.textView_login_link);
-        textView_Login_Link.setOnClickListener(new View.OnClickListener() {
+        activityRegisterBinding.textViewLoginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));

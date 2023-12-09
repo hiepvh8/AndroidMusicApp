@@ -1,8 +1,12 @@
 package com.example.androidmusicapp.view.authActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,99 +20,108 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
-
+import com.example.androidmusicapp.databinding.ActivityLoginBinding;
 import com.example.androidmusicapp.view.MainActivity;
-
-import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.model.entity.User;
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.androidmusicapp.view.fragment.HomeFragment;
+import com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText editTextLoginEmail , editTextLoginPassword;
-    private ProgressBar progressBar;
-
+    private loginViewModel loginViewModel;
+    private ActivityLoginBinding activityLoginBinding;
+    public static final String SHARE_FRE = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        editTextLoginEmail = findViewById(R.id.editText_login_email);
-        editTextLoginPassword =findViewById(R.id.editText_login_password);
-        progressBar = findViewById(R.id.progressBar);
-        //register
-        TextView textView_register_link = findViewById(R.id.textView_register_link);
-        textView_register_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-        //forgot password
-        TextView textView_forgot_password = findViewById(R.id.textView_forgot_password_link);
-        textView_forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-            }
-        });
-        //show hide pass
-        ImageView imageViewShowHidePass = findViewById(R.id.imageView_show_hide_pass);
-        imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
-        imageViewShowHidePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(editTextLoginPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                    //if pass is visible then hide it
-                    editTextLoginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    //change icon
-                    imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
-                } else {
-                    editTextLoginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    imageViewShowHidePass.setImageResource(R.drawable.ic_show_pass);
+        activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(activityLoginBinding.getRoot());
+        loginViewModel = new ViewModelProvider(this).get(loginViewModel.class);
+
+        EditText editTextLoginEmail = activityLoginBinding.editTextLoginEmail;
+        EditText editTextLoginPassword = activityLoginBinding.editTextLoginPassword;
+        ProgressBar progressBar = activityLoginBinding.progressBar;
+        // Kiểm tra token trong SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARE_FRE, MODE_PRIVATE);
+        String token = sharedPreferences.getString("TOKEN_KEY", "");
+
+        if (!token.isEmpty()) {
+            // Nếu token đã tồn tại, chuyển sang MainActivity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("TOKEN_KEY", token);
+            startActivity(intent);
+            finish();
+        } else {
+            //register
+            activityLoginBinding.textViewRegisterLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 }
-            }
-        });
-        //Login
-        Button buttonLogin = findViewById(R.id.button_login);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String textEmail = editTextLoginEmail.getText().toString();
-                String textPassword =editTextLoginPassword.getText().toString();
-                if(TextUtils.isEmpty(textEmail)){
-                    Toast.makeText(LoginActivity.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
-                    editTextLoginEmail.setError("Nhâp email");
-                    editTextLoginEmail.requestFocus();
-                } else if (TextUtils.isEmpty(textPassword)){
-                    Toast.makeText(LoginActivity.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
-                    editTextLoginPassword.setError("Nhập mật khẩu");
-                    editTextLoginPassword.requestFocus();
-                } else {
-                    progressBar.setVisibility(View.VISIBLE);
-                    User user = new User(textEmail,textPassword);
-                    ApiService.apiService.signIn(user).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if(response.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Toast.makeText(LoginActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+            });
+            //forgot password
+            activityLoginBinding.textViewForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
                 }
-            }
-        });
+            });
+            //show hide pass
+            ImageView imageViewShowHidePass = activityLoginBinding.imageViewShowHidePass;
+            imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
+            imageViewShowHidePass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(editTextLoginPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                        editTextLoginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        imageViewShowHidePass.setImageResource(R.drawable.ic_hide_pass);
+                    } else {
+                        editTextLoginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        imageViewShowHidePass.setImageResource(R.drawable.ic_show_pass);
+                    }
+                }
+            });
+            //login
+            activityLoginBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String textEmail = editTextLoginEmail.getText().toString();
+                    String textPassword = editTextLoginPassword.getText().toString();
+                    if(TextUtils.isEmpty(textEmail)){
+                        Toast.makeText(LoginActivity.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+                        editTextLoginEmail.setError("Nhập email");
+                        editTextLoginEmail.requestFocus();
+                    } else if (TextUtils.isEmpty(textPassword)){
+                        Toast.makeText(LoginActivity.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+                        editTextLoginPassword.setError("Nhập mật khẩu");
+                        editTextLoginPassword.requestFocus();
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        loginViewModel.performLogin(textEmail, textPassword);
+                    }
+                }
+            });
+            loginViewModel.getLoginResultLiveData().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String token) {
+                    progressBar.setVisibility(View.GONE);
+                    if (token != null) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("TOKEN_KEY", token);
+                        startActivity(intent);
+                        finish();
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            loginViewModel.getErrorMessage().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String errorMessage) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(LoginActivity.this, errorMessage , Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     private SongAdapter songAdapter;
 
     private homeViewModel homeViewModel;
-    private List<Song> songList;
+    private ArrayList<Song> songList;
 
 
     public static HomeFragment newInstance() {
@@ -45,9 +45,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         songList = new ArrayList<>();
-
-
-
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.SongDisplay);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

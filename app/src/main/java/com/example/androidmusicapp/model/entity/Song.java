@@ -3,7 +3,9 @@ package com.example.androidmusicapp.model.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable {
     @Expose
     @SerializedName("playCount")
     private int playCount;

@@ -18,8 +18,13 @@ import retrofit2.Response;
 
 public class homeViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Song>> songList;
+    private MutableLiveData<String> errorMessage = new MutableLiveData<>();
     public homeViewModel(){
         songList = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
     public MutableLiveData<ArrayList<Song>> getSongListObserver(){
@@ -36,15 +41,15 @@ public class homeViewModel extends ViewModel {
                     songList.postValue(response.body());
                 } else {
                     // Handle error
-                    Toast.makeText(HomeFragment.newInstance().getContext(), "Ngon", Toast.LENGTH_SHORT).show();
+                    errorMessage.setValue("Có lỗi xảy ra ");
                 }
             }
             @Override
             public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
                 songList.postValue(null);
-                Toast.makeText(HomeFragment.newInstance().getContext(), "Ngon", Toast.LENGTH_SHORT).show();
-
+                errorMessage.setValue("Có lỗi xảy ra ");
             }
         });
     }
+
 }

@@ -1,29 +1,35 @@
 package com.example.androidmusicapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Song;
+import com.example.androidmusicapp.view.PlayerActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     Context context;
-    List<Song> songList;
+    ArrayList<Song> songList;
     private AdapterView.OnItemClickListener listener;
-    public SongAdapter(Context context, List<Song> List) {
+    public SongAdapter(Context context, ArrayList<Song> List) {
         this.context = context;
         this.songList = List;
     }
@@ -43,6 +49,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position) {
         holder.bind(songList.get(position));
+        int songIndex = holder.getAdapterPosition();
+        holder.layoutSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PlayerActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object_song", songList.get(songIndex));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+//    private void onClickGoToPlayer(ArrayList<Song> songList) {
+//        Intent intent = new Intent(context, PlayerActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("object_song", songList.get(position));
+//        intent.putExtras(bundle);
+//        context.startActivity(intent);
+//    }
+
+    public void release(){
+        context = null;
     }
 
     @Override
@@ -54,20 +83,37 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private CardView layoutSong;
         private TextView title,duration,genre;
         private ImageView art;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            layoutSong = itemView.findViewById(R.id.song_item);
             title = itemView.findViewById(R.id.SongTitle);
-            //duration = itemView.findViewById(R.id.SongDuration);
+            duration = itemView.findViewById(R.id.SongDuration);
             genre = itemView.findViewById(R.id.SongGenre);
             art = itemView.findViewById(R.id.SongArt);
         }
         public void bind(Song song){
             title.setText(String.valueOf(song.getTitle()));
-            //duration.setText(String.valueOf(song.getDuration()));
+            duration.setText((getDuration(song.getDuration())));
             genre.setText(String.valueOf(song.getGenre()));
             Glide.with(context).load(song.getCoverArt()).into(art);
+        }
+
+        private String getDuration (int duration){
+            String totalDurationText;
+            int hrs = duration / 3600;
+            int min = (duration % 3600) / 60;
+            int sec = duration % 60;
+
+            if (hrs < 1){
+                totalDurationText = String.format("%02d:%02d", min,sec);
+            }
+            else {
+                totalDurationText = String.format("%1d:%02d:%02d",hrs,min,sec);
+            }
+            return totalDurationText;
         }
     }
 }

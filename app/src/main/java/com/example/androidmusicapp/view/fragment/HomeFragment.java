@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
         songAdapter = new SongAdapter(getActivity(), songList);
         recyclerView.setAdapter(songAdapter);
 
+
         homeViewModel = new ViewModelProvider(this).get(homeViewModel.class);
         homeViewModel.getSongListObserver().observe(getViewLifecycleOwner(), new Observer<ArrayList<Song>>() {
             @Override

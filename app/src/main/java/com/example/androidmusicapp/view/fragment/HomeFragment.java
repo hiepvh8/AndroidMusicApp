@@ -61,11 +61,8 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
         homeViewModel.loadSong();
         return view;
-
     }
-
 }
 

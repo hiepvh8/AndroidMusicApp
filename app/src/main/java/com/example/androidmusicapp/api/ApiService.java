@@ -1,6 +1,7 @@
 package com.example.androidmusicapp.api;
 
 
+import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.model.entity.User;
 
@@ -22,5 +23,6 @@ public interface ApiService {
     Call<ArrayList<Song>> getSongs();
     @GET("user/get/username")
     Call<User> getUserByUsername(@Query("username") String username);
-
+    @GET("playlist")
+    Call<Playlist> getPlaylistByUsername(@Query("username") String username);
 }

@@ -29,7 +29,6 @@ import com.example.androidmusicapp.viewmodel.authViewModel.loginViewModel;
 public class LoginActivity extends AppCompatActivity {
     private loginViewModel loginViewModel;
     private ActivityLoginBinding activityLoginBinding;
-    public static final String SHARE_FRE = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         EditText editTextLoginEmail = activityLoginBinding.editTextLoginEmail;
         EditText editTextLoginPassword = activityLoginBinding.editTextLoginPassword;
         ProgressBar progressBar = activityLoginBinding.progressBar;
-        // Kiểm tra token trong SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARE_FRE, MODE_PRIVATE);
+        //kiểm tra token
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("TOKEN_KEY", "");
 
         if (!token.isEmpty()) {
-            // Nếu token đã tồn tại, chuyển sang MainActivity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("TOKEN_KEY", token);
             startActivity(intent);
@@ -105,6 +103,10 @@ public class LoginActivity extends AppCompatActivity {
                 public void onChanged(String token) {
                     progressBar.setVisibility(View.GONE);
                     if (token != null) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("TOKEN_KEY", token);
+                        editor.apply();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("TOKEN_KEY", token);
                         startActivity(intent);

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.databinding.ActivityMainBinding;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ActivityMainBinding binding;
+
     public static final String SHARE_FRE = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
     }
 
     private void replaceFragment(Fragment fragment) {

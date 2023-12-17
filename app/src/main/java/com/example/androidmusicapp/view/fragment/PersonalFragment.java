@@ -62,25 +62,6 @@ public class PersonalFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        songList = new ArrayList<>();
-        recyclerView = (RecyclerView) fragmentPersonalBinding.SongDisplay;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        playlistAdapter = new PlaylistAdapter(getActivity(), songList);
-        recyclerView.setAdapter(playlistAdapter);
-
-        homeViewModel = new ViewModelProvider(this).get(homeViewModel.class);
-        homeViewModel.getSongListObserver().observe(getViewLifecycleOwner(), new Observer<ArrayList<Song>>() {
-            @Override
-            public void onChanged(ArrayList<Song> arrayList) {
-                if(homeViewModel != null){
-                    songList = arrayList;
-                    playlistAdapter.setSongList(arrayList);
-                }
-            }
-        });
-        homeViewModel.loadSong();
-
         return fragmentPersonalBinding.getRoot();
     }
 

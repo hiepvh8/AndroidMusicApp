@@ -15,70 +15,69 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.view.PlayerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>{
-    private Context context;
-    private List<Song> songList;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-    public PlaylistAdapter(Context context , List<Song> List) {
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
+    private Context context;
+    private List<Playlist> playlistList;
+
+    public PlaylistAdapter(Context context, List<Playlist> playlistList) {
         this.context = context;
-        this.songList = List;
+        this.playlistList = playlistList;
     }
 
-    public void setSongList(List<Song> songList) {
-        this.songList = songList;
+    public void setPlaylists(List<Playlist> playlistList) {
+        this.playlistList = playlistList;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public PlaylistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_items, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_items, parent, false);
         return new PlaylistViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
-        holder.bind(songList.get(position));
-        int songIndex = holder.getAdapterPosition();
-        holder.layoutSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PlayerActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object_song", songList.get(songIndex));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
-        });
+        Playlist playlist = playlistList.get(position);
+        holder.bind(playlist);
     }
 
     @Override
     public int getItemCount() {
-        if(songList != null){
-            return songList.size();
-        }
-        return 0;
+        return (playlistList != null) ? playlistList.size() : 0;
     }
 
     public class PlaylistViewHolder extends RecyclerView.ViewHolder {
-        private CardView layoutSong;
-        private ImageView imageViewPlaylist;
-        private TextView textViewPlaylist;
+        private TextView titleTextView;
+        private TextView userTextView;
+
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
-            layoutSong = itemView.findViewById(R.id.playlist_item);
-            imageViewPlaylist = itemView.findViewById(R.id.image_playlist);
-            textViewPlaylist = itemView.findViewById(R.id.textView_playlist);
+            titleTextView = itemView.findViewById(R.id.textView_playlist);
         }
-        public void bind(Song song) {
-            Glide.with(context).load(song.getCoverArt()).into(imageViewPlaylist);
-            textViewPlaylist.setText(String.valueOf(song.getTitle()));
+
+        public void bind(Playlist playlist) {
+            titleTextView.setText(playlist.getTitle());
+            // Các thuộc tính khác của Playlist có thể được hiển thị ở đây
         }
     }
 }
+

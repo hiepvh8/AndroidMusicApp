@@ -13,26 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.androidmusicapp.R;
-import com.example.androidmusicapp.adapter.PlaylistAdapter;
-import com.example.androidmusicapp.adapter.SongAdapter;
-import com.example.androidmusicapp.adapter.TestAdapter;
+import com.example.androidmusicapp.adapter.SearchAdapter;
 import com.example.androidmusicapp.api.ApiService;
-import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.viewmodel.homeViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class LibararyFragment extends Fragment {
     ApiService apiService;
     private RecyclerView recyclerView;
-    private TestAdapter playlistAdapter;
+    private SearchAdapter playlistAdapter;
 
     private homeViewModel homeViewModel;
     private ArrayList<Song> songList;
@@ -44,7 +36,7 @@ public class LibararyFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_libarary, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.PlaylistDisplay);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        playlistAdapter = new TestAdapter(getActivity(), songList);
+        playlistAdapter = new SearchAdapter(getActivity(), songList);
         recyclerView.setAdapter(playlistAdapter);
 
         homeViewModel = new ViewModelProvider(this).get(homeViewModel.class);

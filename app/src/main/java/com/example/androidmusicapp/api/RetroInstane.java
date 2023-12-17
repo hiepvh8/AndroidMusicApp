@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroInstane {
 
-    public static String Base_url = "http://192.168.1.3:8081/";
+    public static String Base_url = "http://192.168.1.11:8081/";
     private static Retrofit retrofit;
     public static Retrofit getRetroClient(){
         if(retrofit == null){

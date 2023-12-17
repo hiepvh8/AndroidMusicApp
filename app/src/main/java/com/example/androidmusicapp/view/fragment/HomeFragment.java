@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     private SongAdapter songAdapter;
 
     private homeViewModel homeViewModel;
-    private ArrayList<Song> songList;
+    static ArrayList<Song> songList;
 
 
     public static HomeFragment newInstance() {

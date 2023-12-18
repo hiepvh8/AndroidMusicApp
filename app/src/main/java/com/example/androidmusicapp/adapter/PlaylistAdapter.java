@@ -62,21 +62,27 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     @Override
     public int getItemCount() {
-        return (playlistList != null) ? playlistList.size() : 0;
+        if (playlistList != null) {
+            return playlistList.size();
+        }
+        return 0;
     }
 
     public class PlaylistViewHolder extends RecyclerView.ViewHolder {
+        private CardView layoutPlaylist;
         private TextView titleTextView;
-        private TextView userTextView;
+        private ImageView img;
 
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
+            layoutPlaylist = itemView.findViewById(R.id.playlist_item);
             titleTextView = itemView.findViewById(R.id.textView_playlist);
+            img = itemView.findViewById(R.id.image_playlist);
+            img.setImageResource(R.drawable.ic_playlist);
         }
 
         public void bind(Playlist playlist) {
-            titleTextView.setText(playlist.getTitle());
-            // Các thuộc tính khác của Playlist có thể được hiển thị ở đây
+            titleTextView.setText(String.valueOf(playlist.getTitle()));
         }
     }
 }

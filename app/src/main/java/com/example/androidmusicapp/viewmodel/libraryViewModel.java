@@ -62,24 +62,6 @@ public class libraryViewModel extends ViewModel {
     }
 
     private void loadPlaylist(String username, MutableLiveData<ArrayList<Playlist>> resultLiveData) {
-        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-        Call<Playlist> call = apiService.getPlaylistByUsername(username);
-        call.enqueue(new Callback<Playlist>() {
-            @Override
-            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<Playlist> playlistList = new ArrayList<>();
-                    playlistList.add(response.body());
-                    resultLiveData.setValue(playlistList);
-                } else {
-                    // Handle unsuccessful response
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Playlist> call, Throwable t) {
-                // Handle failure
-            }
-        });
     }
 }

@@ -5,26 +5,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.adapter.PlaylistAdapter;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.model.entity.Playlist;
-import com.example.androidmusicapp.viewmodel.libraryViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,42 +31,39 @@ public class LibraryFragment extends Fragment {
     private ApiService apiService;
     private RecyclerView recyclerView;
     private PlaylistAdapter playlistAdapter;
+    private ArrayList<Playlist> playlistArrayList = new ArrayList<>();
+
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_libarary, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_library, container, false);
 
-        recyclerView = rootView.findViewById(R.id.PlaylistDisplay);
-        playlistAdapter = new PlaylistAdapter(getContext(), new ArrayList<>());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.PlaylistDisplay);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        playlistAdapter = new PlaylistAdapter(getActivity(), playlistArrayList);
         recyclerView.setAdapter(playlistAdapter);
 
-        Retrofit retrofit = RetroInstane.getRetroClient();
-        apiService = retrofit.create(ApiService.class);
 
-        // Gọi phương thức API để lấy danh sách Playlist cho một username cụ thể
         String username = "hieutest2"; // Thay thế bằng username cần lấy danh sách Playlist
-        Call<Playlist> call = apiService.getPlaylistByUsername(username);
-        call.enqueue(new Callback<Playlist>() {
+        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+        Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername("hieutest3");
+        call.enqueue(new Callback<ArrayList<Playlist>>() {
             @Override
-            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Playlist playlist = response.body();
-                    List<Playlist> playlistList = new ArrayList<>();
-                    playlistList.add(playlist);
-
-                    // Cập nhật dữ liệu vào PlaylistAdapter
-                    playlistAdapter.setPlaylists(playlistList);
+            public void onResponse(Call<ArrayList<Playlist>> call, Response<ArrayList<Playlist>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Playlist> playlists = response.body();
+                    playlistAdapter.setPlaylists(playlists); // Cập nhật dữ liệu mới cho adapter
                 } else {
                     // Xử lý khi không thành công
-                    Log.e("API Call", "Response unsuccessful.");
+                    // Ví dụ: Hiển thị thông báo lỗi
                 }
             }
 
             @Override
-            public void onFailure(Call<Playlist> call, Throwable t) {
+            public void onFailure(Call<ArrayList<Playlist>> call, Throwable t) {
                 // Xử lý khi gọi API thất bại
-                Log.e("API Call", "Failed: " + t.getMessage());
+                // Ví dụ: Hiển thị thông báo lỗi
             }
         });
 

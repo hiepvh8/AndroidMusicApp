@@ -57,27 +57,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.layoutSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-
-                // Khởi tạo MediaPlayer mới và phát bài hát mới
-                mediaPlayer = new MediaPlayer();
-                try {
-
-                    mediaPlayer.setDataSource(songList.get(songIndex).getFilePath());
-                    mediaPlayer.prepare();
-                    //mediaPlayer.start();
-                    notifyDataSetChanged();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                     Intent intent = new Intent(context, PlayerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("object_song", songList.get(songIndex));
-                    bundle.putBoolean("isPlaying", isPlaying);
+                    bundle.putInt("position", songIndex);
+                    bundle.putInt("size", songList.size());
+                    bundle.putSerializable("songList", songList);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

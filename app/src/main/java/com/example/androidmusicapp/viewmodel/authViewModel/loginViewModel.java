@@ -36,7 +36,6 @@ public class loginViewModel extends ViewModel {
                     loginResultLiveData.setValue(null);
                 }
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 errorMessage.setValue("có lỗi xảy ra");

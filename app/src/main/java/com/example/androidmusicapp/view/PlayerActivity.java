@@ -80,10 +80,11 @@ public class PlayerActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    if (!mediaPlayer.isPlaying()){
                     mediaPlayer.start();
                     activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_pause_circle_filled_24);
                     updateSeekBar();
-                }
+                }}
             }
         });
         prepareMediaPlayer(filePath);

@@ -18,6 +18,8 @@ import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.view.PlayerActivity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +86,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         public void bind(Playlist playlist) {
             titleTextView.setText(String.valueOf(playlist.getTitle()));
         }
+
+        private void displaySongListJson() {
+
+        }
     }
+
 }
 

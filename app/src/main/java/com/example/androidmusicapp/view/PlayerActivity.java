@@ -1,6 +1,7 @@
 package com.example.androidmusicapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.helper.widget.Carousel;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.example.androidmusicapp.adapter.SongAdapter;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.databinding.ActivityPlayerBinding;
+import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.model.entity.Song;
 
 import com.google.gson.Gson;
@@ -239,38 +241,39 @@ public class PlayerActivity extends AppCompatActivity {
         timerString = timerString + minute + ":" + secondString;
         return timerString;
     }
-    public void addSong(){
-        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-        Call<ArrayList<Song>> call = apiService.getSongs();
-        call.enqueue(new Callback<ArrayList<Song>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<Song> songs = response.body();
-                    if (songs != null && !songs.isEmpty()) {
-                        songList = songs;
-                        //currentSongIndex = 0; // Chọn bài hát đầu tiên làm bài hát hiện tại
-                        //prepareAndStartSong(songList.get(currentSongIndex), false);
-                    }
-                } else {
-                    // Handle error
-                    // Toast.makeText(this,"lỗi",Toast.LENGTH_SHORT).show();
-                }
-            }
+//    public void addSong(){
+//        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+//        Call<ArrayList<Song>> call = apiService.getSongs();
+//        call.enqueue(new Callback<ArrayList<Song>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
+//                if (response.isSuccessful()) {
+//                    ArrayList<Song> songs = response.body();
+//                    if (songs != null && !songs.isEmpty()) {
+//                        songList = songs;
+//                        //currentSongIndex = 0; // Chọn bài hát đầu tiên làm bài hát hiện tại
+//                        //prepareAndStartSong(songList.get(currentSongIndex), false);
+//                    }
+//                } else {
+//                    // Handle error
+//                    // Toast.makeText(this,"lỗi",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
+//            }
+//        });
+//    }
+//    private void displaySongListJson() {
+//        // Tạo đối tượng Gson
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//
+//        // Chuyển đổi songList thành chuỗi JSON
+//        String json = gson.toJson(songList);
+//
+//        // Hiển thị chuỗi JSON trong artistPlayer
+//        activityPlayerBinding.artistPlayer.setText(json);
+//    }
 
-            @Override
-            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
-            }
-        });
-    }
-    private void displaySongListJson() {
-        // Tạo đối tượng Gson
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        // Chuyển đổi songList thành chuỗi JSON
-        String json = gson.toJson(songList);
-
-        // Hiển thị chuỗi JSON trong artistPlayer
-        activityPlayerBinding.artistPlayer.setText(json);
-    }
 }

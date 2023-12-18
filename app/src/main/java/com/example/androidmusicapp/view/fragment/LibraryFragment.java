@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.adapter.PlaylistAdapter;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.model.entity.Playlist;
+import com.example.androidmusicapp.model.entity.Song;
+import com.example.androidmusicapp.view.MainActivity;
 
 import java.util.ArrayList;
 
@@ -45,9 +48,9 @@ public class LibraryFragment extends Fragment {
         recyclerView.setAdapter(playlistAdapter);
 
 
-        String username = "hieutest2"; // Thay thế bằng username cần lấy danh sách Playlist
+        String username = "hieutest3"; // Thay thế bằng username cần lấy danh sách Playlist
         ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-        Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername("hieutest3");
+        Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername(username);
         call.enqueue(new Callback<ArrayList<Playlist>>() {
             @Override
             public void onResponse(Call<ArrayList<Playlist>> call, Response<ArrayList<Playlist>> response) {
@@ -55,8 +58,7 @@ public class LibraryFragment extends Fragment {
                     ArrayList<Playlist> playlists = response.body();
                     playlistAdapter.setPlaylists(playlists); // Cập nhật dữ liệu mới cho adapter
                 } else {
-                    // Xử lý khi không thành công
-                    // Ví dụ: Hiển thị thông báo lỗi
+
                 }
             }
 

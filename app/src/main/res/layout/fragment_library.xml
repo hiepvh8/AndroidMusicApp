@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.LibraryFragment"
+    android:padding="30dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/thuvien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thư viện"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold">
+    </TextView>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="+ Danh sách phát"
+        android:background="@drawable/border_button">
+    </Button>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/PlaylistDisplay"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

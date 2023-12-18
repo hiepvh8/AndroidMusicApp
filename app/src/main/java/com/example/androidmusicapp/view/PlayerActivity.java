@@ -1,24 +1,35 @@
 package com.example.androidmusicapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
+import com.example.androidmusicapp.api.ApiService;
+import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.databinding.ActivityPlayerBinding;
 import com.example.androidmusicapp.model.entity.Song;
-import com.example.androidmusicapp.viewmodel.playerViewModel;
+
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -26,29 +37,59 @@ public class PlayerActivity extends AppCompatActivity {
     //    private SeekBar playerSeekBar;
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
+    private int savedSeekBarPosition;
+
+    private ArrayList<Song> songList = new ArrayList<>();
+    private int currentSongIndex = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        activityPlayerBinding =ActivityPlayerBinding.inflate(getLayoutInflater());
+        activityPlayerBinding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(activityPlayerBinding.getRoot());
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
+            //boolean isPlaying = bundle.getBoolean("isPlaying", false);
             return;
         }
 
         Song song = (Song) bundle.get("object_song");
-
+       // Boolean isPlaying = (Boolean) bundle.get("isPlaying") ;
         String filePath = song.getFilePath();
 
-        mediaPlayer = new MediaPlayer();
+
         Glide.with(this).load(song.getCoverArt()).into(activityPlayerBinding.imgPlayer);
+        activityPlayerBinding.artistPlayer.setText(song.getGenre());
+        activityPlayerBinding.titlePlayer.setText(song.getTitle());
+        mediaPlayer = new MediaPlayer();
         activityPlayerBinding.playerSeekBar.setMax(100);
+        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+        Call<ArrayList<Song>> call = apiService.getSongs();
+        call.enqueue(new Callback<ArrayList<Song>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Song> songs = response.body();
+                    if (songs != null){
+                        songList.clear();
+                        songList.addAll(songs);
+                    }
+                } else {
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
+            }
+        });
+        //savedSeekBarPosition = getSavedSeekBarPosition();
+        activityPlayerBinding.playerSeekBar.setProgress(savedSeekBarPosition);
+
 
         activityPlayerBinding.imagePlayPause.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 if(mediaPlayer.isPlaying())
@@ -98,14 +139,70 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
+        activityPlayerBinding.imageNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playNextSong();
+            }
+        });
+
+        activityPlayerBinding.imagePrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPreviousSong();
+            }
+        });
+
         activityPlayerBinding.imageAddLib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+    }
 
+    private void playNextSong() {
+        if (currentSongIndex < songList.size() - 1) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
 
+            currentSongIndex++;
+            prepareAndStartSong(songList.get(currentSongIndex), false);
+        }
+    }
+
+    private void playPreviousSong() {
+        if (currentSongIndex > 0) {
+            // Nếu đang phát bài hát, dừng lại
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+
+            // Chuyển đến bài hát trước đó trong danh sách
+            currentSongIndex--;
+
+            // Chuẩn bị và phát bài hát mới
+            prepareAndStartSong(songList.get(currentSongIndex), false);
+        }
+    }
+
+    private void prepareAndStartSong(Song song, boolean isPlaying) {
+        Song newSong = songList.get(currentSongIndex);
+        String newFilePath = newSong.getFilePath();
+
+        // Load thông tin mới và hiển thị trên giao diện người dùng
+        Glide.with(this).load(song.getCoverArt()).into(activityPlayerBinding.imgPlayer);
+        activityPlayerBinding.artistPlayer.setText(song.getGenre());
+        activityPlayerBinding.titlePlayer.setText(song.getTitle());
+        // Chuẩn bị và phát bài hát mới
+        prepareMediaPlayer(newFilePath);
+        mediaPlayer.start();
+
+        // Cập nhật UI và SeekBar
+        activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_pause_circle_filled_24);
+        updateSeekBar();
+        activityPlayerBinding.textTotalDuration.setText(timer(mediaPlayer.getDuration()));
     }
 
     private void prepareMediaPlayer(String filePath){
@@ -137,7 +234,6 @@ public class PlayerActivity extends AppCompatActivity {
     private String timer (long miliSecond){
         String timerString = "";
         String secondString;
-
         int hours = (int) (miliSecond / (1000*60*60));
         int minute = (int) (miliSecond %(1000*60*60)) / (1000*60);
         int second = (int) ((miliSecond % (1000*60*60)) % (1000*60) / 1000);
@@ -154,5 +250,24 @@ public class PlayerActivity extends AppCompatActivity {
         }
         timerString = timerString + minute + ":" + secondString;
         return timerString;
+    }
+
+    public void addSong(){
+        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+        Call<ArrayList<Song>> call = apiService.getSongs();
+        call.enqueue(new Callback<ArrayList<Song>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Song> songs = response.body();
+                    if (songs != null){
+                    }
+                } else {
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
+            }
+        });
     }
 }

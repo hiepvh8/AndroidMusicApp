@@ -20,13 +20,16 @@ import com.example.androidmusicapp.view.PlayerActivity;
 
 import java.util.List;
 
-public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewholder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.TestViewholder>  {
     private Context context;
     private List<Song> songList;
+    private List<Song> songListOld;
 
-    public TestAdapter(Context context , List<Song> List) {
+
+    public SearchAdapter(Context context , List<Song> List) {
         this.context = context;
         this.songList = List;
+        this.songListOld = List;
     }
 
     public void setSongList(List<Song> songList) {
@@ -63,6 +66,37 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewholder
         }
         return 0;
     }
+
+//    @Override
+//    public Filter getFilter() {
+//        return new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence charSequence) {
+//                String strSearch = charSequence.toString();
+//                if (strSearch.isEmpty()){
+//                    songList = songListOld;
+//                }
+//                else {
+//                    List<Song> list = new ArrayList<>();
+//                    for (Song song: songListOld){
+//                        if (song.getTitle().toLowerCase().contains(strSearch.toLowerCase())){
+//                            list.add(song);
+//                        }
+//                    }
+//                    songList = list;
+//                }
+//                FilterResults filterResults = new FilterResults();
+//                filterResults.values = songList;
+//                return filterResults;
+//            }
+
+//            @Override
+//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//                songList = (List<Song>) filterResults.values;
+//                notifyDataSetChanged();
+//            }
+//        };
+//    }
 
     public class TestViewholder extends RecyclerView.ViewHolder {
         private CardView layoutSong;

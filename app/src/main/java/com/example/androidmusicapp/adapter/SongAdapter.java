@@ -2,6 +2,7 @@ package com.example.androidmusicapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +21,17 @@ import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.view.PlayerActivity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
+    private MediaPlayer mediaPlayer;
     Context context;
     ArrayList<Song> songList;
+    private boolean isPlaying = false;
     private AdapterView.OnItemClickListener listener;
     public SongAdapter(Context context, ArrayList<Song> List) {
         this.context = context;
@@ -53,22 +57,34 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.layoutSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PlayerActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object_song", songList.get(songIndex));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+
+                // Khởi tạo MediaPlayer mới và phát bài hát mới
+                mediaPlayer = new MediaPlayer();
+                try {
+
+                    mediaPlayer.setDataSource(songList.get(songIndex).getFilePath());
+                    mediaPlayer.prepare();
+                    //mediaPlayer.start();
+                    notifyDataSetChanged();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                    Intent intent = new Intent(context, PlayerActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("object_song", songList.get(songIndex));
+                    bundle.putBoolean("isPlaying", isPlaying);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
         });
+
     }
 
-//    private void onClickGoToPlayer(ArrayList<Song> songList) {
-//        Intent intent = new Intent(context, PlayerActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("object_song", songList.get(position));
-//        intent.putExtras(bundle);
-//        context.startActivity(intent);
-//    }
 
     public void release(){
         context = null;

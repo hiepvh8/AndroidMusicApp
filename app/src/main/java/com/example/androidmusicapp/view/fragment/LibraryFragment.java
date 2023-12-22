@@ -20,7 +20,6 @@ import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.adapter.PlaylistAdapter;
 import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.api.RetroInstane;
-import com.example.androidmusicapp.databinding.FragmentLibraryBinding;
 import com.example.androidmusicapp.model.entity.Playlist;
 
 import java.util.ArrayList;

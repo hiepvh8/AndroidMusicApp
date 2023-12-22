@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Playlist;
-
 import java.util.List;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
@@ -69,5 +68,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
             titleTextView.setText(String.valueOf(playlist.getTitle()));
         }
     }
+
 }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.adapter.SearchAdapter;
@@ -36,6 +37,7 @@ public class SearchFragment extends Fragment {
     private SearchAdapter songAdapter;
     private SearchView searchView;
 
+    FrameLayout frameLayout;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -50,6 +52,7 @@ public class SearchFragment extends Fragment {
         songAdapter = new SearchAdapter(getActivity(), songArrayList);
         recyclerView.setAdapter(songAdapter);
         searchView = view.findViewById(R.id.searchView);
+        frameLayout = view.findViewById(R.id.Textlayout);
         homeViewModel = new ViewModelProvider(this).get(homeViewModel.class);
 
         homeViewModel.getSongListObserver().observe(getViewLifecycleOwner(), new Observer<ArrayList<Song>>() {
@@ -72,10 +75,11 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText != null && !newText.isEmpty()) {
                     searchSongs(newText);
+                    frameLayout.setVisibility(View.GONE);
                 } else {
                     // If the search query is empty, load all songs
                     songAdapter.setSongList(null);
-
+                    frameLayout.setVisibility(View.VISIBLE);
                 }
                 return false;
             }

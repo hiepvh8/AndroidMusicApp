@@ -1,16 +1,16 @@
 package com.example.androidmusicapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.media.AudioManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
@@ -18,22 +18,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
-import com.example.androidmusicapp.adapter.SongAdapter;
-import com.example.androidmusicapp.api.ApiService;
-import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.databinding.ActivityPlayerBinding;
+import com.example.androidmusicapp.decorView.CreateNotification;
 import com.example.androidmusicapp.model.entity.Song;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.GET;
 
 
 public class PlayerActivity extends AppCompatActivity {
@@ -41,9 +31,11 @@ public class PlayerActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
     private int savedSeekBarPosition;
-    private SongAdapter songAdapter;
     private ArrayList<Song> songList = new ArrayList<>();
+    private ArrayList<Song> shufflesongList = new ArrayList<>();
     private int currentSongIndex = 0;
+    private boolean isRepeat = false;
+   
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -104,17 +96,7 @@ public class PlayerActivity extends AppCompatActivity {
                 activityPlayerBinding.playerSeekBar.setSecondaryProgress(i);
             }
         });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                activityPlayerBinding.playerSeekBar.setProgress(0);
-                activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_play_circle_24);
-                activityPlayerBinding.textCurrentTime.setText(R.string.zero);
-                activityPlayerBinding.textTotalDuration.setText(R.string.zero);
-                mediaPlayer.reset();
-                autoPlayNextSong();
-            }
-        });
+
         activityPlayerBinding.imageNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,28 +109,66 @@ public class PlayerActivity extends AppCompatActivity {
                 playPrevousSong();
             }
         });
+
+        activityPlayerBinding.imageRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                songRepeat();
+            }
+        });
+
         activityPlayerBinding.imageAddLib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                activityPlayerBinding.playerSeekBar.setProgress(0);
+                activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_play_circle_24);
+                activityPlayerBinding.textCurrentTime.setText(R.string.zero);
+                activityPlayerBinding.textTotalDuration.setText(R.string.zero);
+                mediaPlayer.reset();
+                autoPlayNextSong();
+            }
+        });
     }
 
     private void playNextSong(){
-        if (mediaPlayer != null){
+        if (mediaPlayer != null) {
             activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_pause_circle_filled_24);
         }
-        if (currentSongIndex < songList.size() - 1) {
-            currentSongIndex++;
+        if (isRepeat) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            updateUI();
+        } else {
+            if (currentSongIndex < songList.size() - 1) {
+                currentSongIndex++;
+            } else {
+                currentSongIndex = 0;
+            }
+
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            updateUI();
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    activityPlayerBinding.playerSeekBar.setProgress(0);
+                    activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_play_circle_24);
+                    activityPlayerBinding.textCurrentTime.setText(R.string.zero);
+                    activityPlayerBinding.textTotalDuration.setText(R.string.zero);
+                    mediaPlayer.reset();
+                    autoPlayNextSong();
+                }
+            });
         }
-        else {
-            currentSongIndex = 0;
-        }
-        if (mediaPlayer.isPlaying()){
-            mediaPlayer.stop();
-        }
-        updateUI();
     }
     private void playPrevousSong(){
         if (mediaPlayer != null){
@@ -161,6 +181,17 @@ public class PlayerActivity extends AppCompatActivity {
             mediaPlayer.stop();
         }
         updateUI();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                activityPlayerBinding.playerSeekBar.setProgress(0);
+                activityPlayerBinding.imagePlayPause.setImageResource(R.drawable.baseline_play_circle_24);
+                activityPlayerBinding.textCurrentTime.setText(R.string.zero);
+                activityPlayerBinding.textTotalDuration.setText(R.string.zero);
+                mediaPlayer.reset();
+                autoPlayNextSong();
+            }
+        });
     }
     private void updateUI(){
         String filePath = songList.get(currentSongIndex).getFilePath();
@@ -219,6 +250,18 @@ public class PlayerActivity extends AppCompatActivity {
             handler.postDelayed(updater, 1000);
         }
     }
+
+    public void songRepeat(){
+        if(!isRepeat){
+            isRepeat = true;
+            activityPlayerBinding.imageRepeat.setColorFilter(ContextCompat.getColor(this, R.color.green));
+            mediaPlayer.setLooping(true);
+        }else {
+            isRepeat = false;
+            activityPlayerBinding.imageRepeat.clearColorFilter();
+            mediaPlayer.setLooping(false);
+        }
+    }
     private String timer (long miliSecond){
         String timerString = "";
         String secondString;
@@ -239,38 +282,39 @@ public class PlayerActivity extends AppCompatActivity {
         timerString = timerString + minute + ":" + secondString;
         return timerString;
     }
-    public void addSong(){
-        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-        Call<ArrayList<Song>> call = apiService.getSongs();
-        call.enqueue(new Callback<ArrayList<Song>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<Song> songs = response.body();
-                    if (songs != null && !songs.isEmpty()) {
-                        songList = songs;
-                        //currentSongIndex = 0; // Chọn bài hát đầu tiên làm bài hát hiện tại
-                        //prepareAndStartSong(songList.get(currentSongIndex), false);
-                    }
-                } else {
-                    // Handle error
-                    // Toast.makeText(this,"lỗi",Toast.LENGTH_SHORT).show();
-                }
-            }
+//    public void addSong(){
+//        ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+//        Call<ArrayList<Song>> call = apiService.getSongs();
+//        call.enqueue(new Callback<ArrayList<Song>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Song>> call, Response<ArrayList<Song>> response) {
+//                if (response.isSuccessful()) {
+//                    ArrayList<Song> songs = response.body();
+//                    if (songs != null && !songs.isEmpty()) {
+//                        songList = songs;
+//                        //currentSongIndex = 0; // Chọn bài hát đầu tiên làm bài hát hiện tại
+//                        //prepareAndStartSong(songList.get(currentSongIndex), false);
+//                    }
+//                } else {
+//                    // Handle error
+//                    // Toast.makeText(this,"lỗi",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
+//            }
+//        });
+//    }
+//    private void displaySongListJson() {
+//        // Tạo đối tượng Gson
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//
+//        // Chuyển đổi songList thành chuỗi JSON
+//        String json = gson.toJson(songList);
+//
+//        // Hiển thị chuỗi JSON trong artistPlayer
+//        activityPlayerBinding.artistPlayer.setText(json);
+//    }
 
-            @Override
-            public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
-            }
-        });
-    }
-    private void displaySongListJson() {
-        // Tạo đối tượng Gson
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        // Chuyển đổi songList thành chuỗi JSON
-        String json = gson.toJson(songList);
-
-        // Hiển thị chuỗi JSON trong artistPlayer
-        activityPlayerBinding.artistPlayer.setText(json);
-    }
 }

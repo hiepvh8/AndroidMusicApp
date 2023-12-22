@@ -18,21 +18,22 @@ import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.view.PlayerActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.TestViewholder>  {
     private Context context;
-    private List<Song> songList;
+    private ArrayList<Song> songList;
     private List<Song> songListOld;
 
 
-    public SearchAdapter(Context context , List<Song> List) {
+    public SearchAdapter(Context context , ArrayList<Song> List) {
         this.context = context;
         this.songList = List;
         this.songListOld = List;
     }
 
-    public void setSongList(List<Song> songList) {
+    public void setSongList(ArrayList<Song> songList) {
         this.songList = songList;
         notifyDataSetChanged();
     }
@@ -53,6 +54,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.TestViewho
                 Intent intent = new Intent(context, PlayerActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("object_song", songList.get(songIndex));
+                bundle.putInt("position", songIndex);
+                bundle.putInt("size", songList.size());
+                bundle.putSerializable("songList", songList);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

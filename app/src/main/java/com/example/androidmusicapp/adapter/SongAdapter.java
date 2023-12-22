@@ -31,7 +31,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private MediaPlayer mediaPlayer;
     Context context;
     ArrayList<Song> songList;
-    private boolean isPlaying = false;
+    private PlayerActivity playerActivity;
     private AdapterView.OnItemClickListener listener;
     public SongAdapter(Context context, ArrayList<Song> List) {
         this.context = context;
@@ -57,6 +57,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.layoutSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        // If a song is currently playing, stop it
+                        mediaPlayer.stop();
+                        mediaPlayer.reset();
+                    }
                     Intent intent = new Intent(context, PlayerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("object_song", songList.get(songIndex));

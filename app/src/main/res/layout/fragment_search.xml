@@ -45,5 +45,23 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Textlayout">
+
+            <TextView
+                android:id="@+id/centeredTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Tìm kiếm bài hát mà bạn muốn!"
+                android:textStyle="bold"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp" />
+
+        </FrameLayout>
+
+
     </RelativeLayout>
 </RelativeLayout>

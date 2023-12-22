@@ -86,10 +86,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         public void bind(Playlist playlist) {
             titleTextView.setText(String.valueOf(playlist.getTitle()));
         }
-
-        private void displaySongListJson() {
-
-        }
     }
 
 }

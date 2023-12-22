@@ -11,11 +11,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Song;
 
-public class Notification {
+public class CreateNotification {
     public static final String CHANNEL_ID = "channel1";
     public static final String ACTIONPREVIOUS = "actionprevious";
     public static final String ACTIONNEXT = "actionnext";
@@ -23,7 +22,7 @@ public class Notification {
     public static android.app.Notification notification;
 
     @SuppressLint("NotConstructor")
-    public void setNotification(Context context, Song song, int playpause, int pos, int size) {
+    public void createNotification(Context context, Song song, int playpause, int pos, int size) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);

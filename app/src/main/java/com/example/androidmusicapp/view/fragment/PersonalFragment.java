@@ -17,21 +17,25 @@ import android.view.ViewGroup;
 
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.adapter.PlaylistAdapter;
-import com.example.androidmusicapp.adapter.SongAdapter;
+import com.example.androidmusicapp.adapter.PlaylistAdapter2;
+import com.example.androidmusicapp.api.ApiService;
+import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.databinding.FragmentPersonalBinding;
-import com.example.androidmusicapp.model.entity.Song;
-import com.example.androidmusicapp.viewmodel.homeViewModel;
+import com.example.androidmusicapp.model.entity.Playlist;
+import com.example.androidmusicapp.viewmodel.personalViewModel;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class PersonalFragment extends Fragment {
     private FragmentPersonalBinding fragmentPersonalBinding;
-    private com.example.androidmusicapp.viewmodel.personalViewModel personalViewModel;
+    private personalViewModel personalViewModel;
     private RecyclerView recyclerView;
-    private PlaylistAdapter playlistAdapter;
-
-    private com.example.androidmusicapp.viewmodel.homeViewModel homeViewModel;
-    private ArrayList<Song> songList;
+    private PlaylistAdapter2 playlistAdapter2;
+    private ArrayList<Playlist> playlistArrayList;
     public static PersonalFragment newInstance() {
         return new PersonalFragment();
     }
@@ -62,6 +66,12 @@ public class PersonalFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        recyclerView = fragmentPersonalBinding.PlaylistDisplay;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        playlistAdapter2 = new PlaylistAdapter2(getActivity(), playlistArrayList);
+        recyclerView.setAdapter(playlistAdapter2);
+        personalViewModel = new ViewModelProvider(this).get(com.example.androidmusicapp.viewmodel.personalViewModel.class);
         return fragmentPersonalBinding.getRoot();
     }
 
@@ -70,6 +80,21 @@ public class PersonalFragment extends Fragment {
             @Override
             public void onChanged(String username) {
                 fragmentPersonalBinding.textViewName.setText(username);
+                ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+                Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername(username);
+                call.enqueue(new Callback<ArrayList<Playlist>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Playlist>> call, Response<ArrayList<Playlist>> response) {
+                        if (response.isSuccessful()) {
+                            ArrayList<Playlist> playlists = response.body();
+                            playlistAdapter2.setPlaylists(playlists);
+                        } else {
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ArrayList<Playlist>> call, Throwable t) {
+                    }
+                });
             }
         });
     }

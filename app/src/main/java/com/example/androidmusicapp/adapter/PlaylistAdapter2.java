@@ -11,17 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.androidmusicapp.R;
 import com.example.androidmusicapp.model.entity.Playlist;
 
 import java.util.List;
 
-public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
+public class PlaylistAdapter2 extends RecyclerView.Adapter<PlaylistAdapter2.PlaylistViewHolder> {
     private Context context;
     private List<Playlist> playlistList;
 
-    public PlaylistAdapter(Context context, List<Playlist> playlistList) {
+    public PlaylistAdapter2(Context context, List<Playlist> playlistList) {
         this.context = context;
         this.playlistList = playlistList;
     }
@@ -34,7 +33,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     @NonNull
     @Override
     public PlaylistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_items_2, parent, false);
         return new PlaylistViewHolder(view);
     }
 
@@ -59,10 +58,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
-            layoutPlaylist = itemView.findViewById(R.id.playlist_item);
+            layoutPlaylist = itemView.findViewById(R.id.playlist_item_2);
             titleTextView = itemView.findViewById(R.id.textView_playlist);
-            img = itemView.findViewById(R.id.image_playlist);
-            img.setImageResource(R.drawable.ic_playlist);
         }
 
         public void bind(Playlist playlist) {

@@ -25,6 +25,8 @@ public interface ApiService {
     Call<User> getUserByUsername(@Query("username") String username);
     @GET("playlist")
     Call<ArrayList<Playlist>> getPlaylistByUsername(@Query("username") String username);
+    @POST("/playlist/add")
+    Call<Playlist> addPlaylist(@Query("username") String username, @Body Playlist playlist);
     @GET("song/search")
     Call<ArrayList<Song>> getSongTitle(@Query("partialTitle") String Songtitle);
 

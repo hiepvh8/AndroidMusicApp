@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,11 @@ import com.example.androidmusicapp.api.ApiService;
 import com.example.androidmusicapp.api.RetroInstane;
 import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.view.MainActivity;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,23 +61,30 @@ public class AddPlaylistActivity extends AppCompatActivity {
     }
 
     private void callApiToCreatePlaylist(String username, String playlistTitle) {
+        // Tạo đối tượng Playlist với title được nhập từ EditText
         Playlist playlist = new Playlist();
         playlist.setTitle(playlistTitle);
 
+        // Sử dụng Retrofit để gửi đối tượng Playlist lên server
         ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-        Call<Playlist> call = apiService.addPlaylist(username, playlist);
-        call.enqueue(new Callback<Playlist>() {
+        Call<ResponseBody> call = apiService.addPlaylist(username, playlist);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(AddPlaylistActivity.this, "Tạo playlist thành công", Toast.LENGTH_SHORT).show();
+                    try {
+                        String responseBody = response.body().string();
+                            Toast.makeText(AddPlaylistActivity.this, responseBody, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    Toast.makeText(AddPlaylistActivity.this, "Đã xảy ra lỗi khi tạo playlist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPlaylistActivity.this, "Đã xảy ra lỗi khi gửi yêu cầu", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Playlist> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(AddPlaylistActivity.this, "Đã xảy ra lỗi khi kết nối đến server", Toast.LENGTH_SHORT).show();
             }
         });

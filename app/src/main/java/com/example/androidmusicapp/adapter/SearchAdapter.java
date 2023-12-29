@@ -71,37 +71,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.TestViewho
         return 0;
     }
 
-//    @Override
-//    public Filter getFilter() {
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence charSequence) {
-//                String strSearch = charSequence.toString();
-//                if (strSearch.isEmpty()){
-//                    songList = songListOld;
-//                }
-//                else {
-//                    List<Song> list = new ArrayList<>();
-//                    for (Song song: songListOld){
-//                        if (song.getTitle().toLowerCase().contains(strSearch.toLowerCase())){
-//                            list.add(song);
-//                        }
-//                    }
-//                    songList = list;
-//                }
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = songList;
-//                return filterResults;
-//            }
-
-//            @Override
-//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//                songList = (List<Song>) filterResults.values;
-//                notifyDataSetChanged();
-//            }
-//        };
-//    }
-
     public class TestViewholder extends RecyclerView.ViewHolder {
         private CardView layoutSong;
         private ImageView imageViewPlaylist;

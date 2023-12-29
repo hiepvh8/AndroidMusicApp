@@ -30,7 +30,6 @@ import retrofit2.Response;
 import com.example.androidmusicapp.viewmodel.personalViewModel;
 
 public class LibraryFragment extends Fragment {
-    private RecyclerView recyclerView;
     private PlaylistAdapter playlistAdapter;
     private ArrayList<Playlist> playlistArrayList;
     private personalViewModel personalViewModel;
@@ -40,46 +39,59 @@ public class LibraryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_library, container, false);
-        recyclerView = view.findViewById(R.id.PlaylistDisplay);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        playlistAdapter = new PlaylistAdapter(getActivity(), playlistArrayList);
+        RecyclerView recyclerView = view.findViewById(R.id.PlaylistDisplay);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        playlistAdapter = new PlaylistAdapter(requireContext(), playlistArrayList);
         recyclerView.setAdapter(playlistAdapter);
+
         personalViewModel = new ViewModelProvider(this).get(com.example.androidmusicapp.viewmodel.personalViewModel.class);
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             String token = arguments.getString("TOKEN_KEY");
             personalViewModel.fetchUsernameFromToken(token);
         }
+
         personalViewModel.getUsernameLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String username) {
-                ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
-                Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername(username);
-                call.enqueue(new Callback<ArrayList<Playlist>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Playlist>> call, Response<ArrayList<Playlist>> response) {
-                        if (response.isSuccessful()) {
-                            ArrayList<Playlist> playlists = response.body();
-                            playlistAdapter.setPlaylists(playlists);
-                        } else {
+                if (username != null) {
+                    ApiService apiService = RetroInstane.getRetroClient().create(ApiService.class);
+                    Call<ArrayList<Playlist>> call = apiService.getPlaylistByUsername(username);
+                    call.enqueue(new Callback<ArrayList<Playlist>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Playlist>> call, Response<ArrayList<Playlist>> response) {
+                            if (response.isSuccessful()) {
+                                ArrayList<Playlist> playlists = response.body();
+                                playlistAdapter.setPlaylists(playlists);
+                            } else {
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<ArrayList<Playlist>> call, Throwable t) {
-                    }
-                });
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Playlist>> call, Throwable t) {
+                            // Xử lý lỗi khi gọi API
+                        }
+                    });
+                }
             }
         });
+
         Button addPlaylistButton = view.findViewById(R.id.addplaylist);
         addPlaylistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddPlaylistActivity.class);
                 String username = personalViewModel.getUsernameLiveData().getValue();
-                intent.putExtra("USERNAME_KEY", username);
-                startActivity(intent);
+                if (username != null) {
+                    Intent intent = new Intent(requireActivity(), AddPlaylistActivity.class);
+                    intent.putExtra("USERNAME_KEY", username);
+                    startActivity(intent);
+                } else {
+                    // Xử lý khi không có username
+                }
             }
         });
+
         return view;
     }
 }

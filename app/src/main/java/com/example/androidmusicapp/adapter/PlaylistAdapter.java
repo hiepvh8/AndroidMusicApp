@@ -1,6 +1,7 @@
 package com.example.androidmusicapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         this.playlistList = playlistList;
         notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
@@ -68,6 +70,5 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
             titleTextView.setText(String.valueOf(playlist.getTitle()));
         }
     }
-
 }
 

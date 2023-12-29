@@ -4,8 +4,11 @@ package com.example.androidmusicapp.api;
 import com.example.androidmusicapp.model.entity.Playlist;
 import com.example.androidmusicapp.model.entity.Song;
 import com.example.androidmusicapp.model.entity.User;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 import retrofit2.http.Body;
@@ -14,7 +17,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
-
     @POST("auth/signin")
     Call<User> signIn(@Body User user);
     @POST("auth/signup")
@@ -26,8 +28,7 @@ public interface ApiService {
     @GET("playlist")
     Call<ArrayList<Playlist>> getPlaylistByUsername(@Query("username") String username);
     @POST("/playlist/add")
-    Call<Playlist> addPlaylist(@Query("username") String username, @Body Playlist playlist);
+    Call<ResponseBody> addPlaylist(@Query("username") String username, @Body Playlist playlist);
     @GET("song/search")
     Call<ArrayList<Song>> getSongTitle(@Query("partialTitle") String Songtitle);
-
 }

@@ -102,14 +102,11 @@ public class SearchFragment extends Fragment {
                     ArrayList<Song> searchedSongs = response.body();
                     songAdapter.setSongList(searchedSongs);
                 } else {
-                    // Handle error
-                    // For example, you can log the error or show a message to the user
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Song>> call, Throwable t) {
-                // Handle failure (e.g., network issues)
             }
         });
     }

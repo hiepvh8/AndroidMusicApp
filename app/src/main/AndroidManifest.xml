@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,25 +11,34 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_logo_music"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AndroidMusicApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="false">
-        </activity>
+            android:name=".view.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.homeActivity.UserProfileActivity"
+            android:name=".view.PlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.authActivity.RegisterActivity"
+            android:name=".view.fragment.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.authActivity.ForgotPasswordActivity"
+            android:name=".view.fragment.PersonalUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.authActivity.LoginActivity"
-            android:exported="true">
+            android:name=".view.authActivity.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.authActivity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.authActivity.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

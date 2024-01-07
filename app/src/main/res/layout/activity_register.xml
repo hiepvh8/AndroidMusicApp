@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.authActivity.RegisterActivity"
+    tools:context=".view.authActivity.RegisterActivity"
     android:background="@drawable/gradient_background">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView_register_name"
                 android:layout_toEndOf="@id/imageViewName"
-                android:text="Họ và tên*"
+                android:text="Username*"
                 android:textColor="@color/black"
                 android:padding="5dp"
                 android:textSize="12sp">

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:layout_margin="10dp"
+    android:padding="30dp"
+    android:id="@+id/song_item">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black">
+
+        <!-- Song Art (Cover Image) -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/SongArt"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentTop="false"/>
+
+        <!-- Song Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/SongArt"
+            android:id="@+id/SongTitle"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@color/black"
+           />
+
+<!--         Song Duration -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/SongGenre"
+            android:layout_height="wrap_content"
+            android:id="@+id/SongDuration"
+            android:textColor="@android:color/white"
+            android:background="@color/black"
+            />
+
+        <!-- Song Genre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/SongTitle"
+            android:layout_height="wrap_content"
+            android:id="@+id/SongGenre"
+            android:textColor="@android:color/white"
+            android:background="@color/black"
+           />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
